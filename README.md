@@ -1,4 +1,4 @@
 # Github-List-User-App
 Submission BFAA 1 Dicoding 
 
-Just Open it in your android studio
+Just open it in your android studio
