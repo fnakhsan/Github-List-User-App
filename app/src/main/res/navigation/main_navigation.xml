@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.githubuser2.fragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_detailActivity"
+            app:destination="@id/detailActivity" />
+
+    </fragment>
+    <activity
+        android:id="@+id/detailActivity"
+        android:name="com.example.githubuser2.DetailActivity"
+        android:label="DetailActivity" >
+        <argument
+            android:name="username"
+            app:argType="string"
+            android:defaultValue="name" />
+    </activity>
+</navigation>
