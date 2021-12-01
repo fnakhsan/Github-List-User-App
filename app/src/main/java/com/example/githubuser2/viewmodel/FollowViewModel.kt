@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.githubuser2.data.FollowResponse
 import com.example.githubuser2.data.FollowResponseItem
 import com.example.githubuser2.network.ApiConfig
 import retrofit2.Call
@@ -29,21 +28,21 @@ class FollowViewModel: ViewModel() {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getFollowersUsers(githubFollower)
         with(client) {
-            enqueue(object : Callback<FollowResponse> {
+            enqueue(object : Callback<List<FollowResponseItem>> {
                 override fun onResponse(
-                    call: Call<FollowResponse>,
-                    response: Response<FollowResponse>
+                    call: Call<List<FollowResponseItem>>,
+                    response: Response<List<FollowResponseItem>>
                 ) {
                     _isLoading.value = false
                     if (response.isSuccessful) {
-                        _followerResponse.value = response.body()?.followResponse
+                        _followerResponse.value = response.body()
                         Log.e(TAG, "onSuccess: ${response.message()}")
                     } else {
                         Log.e(TAG, "onFailure: ${response.message()}")
                     }
                 }
 
-                override fun onFailure(call: Call<FollowResponse>, t: Throwable) {
+                override fun onFailure(call: Call<List<FollowResponseItem>>, t: Throwable) {
                     _isLoading.value = false
                     Log.e(TAG, "onFailure: ${t.message.toString()}")
                 }
@@ -55,23 +54,23 @@ class FollowViewModel: ViewModel() {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getFollowersUsers(githubFollowing)
         with(client) {
-            enqueue(object : Callback<FollowResponse> {
+            enqueue(object : Callback<List<FollowResponseItem>> {
                 override fun onResponse(
-                    call: Call<FollowResponse>,
-                    response: Response<FollowResponse>
+                    call: Call<List<FollowResponseItem>>,
+                    response: Response<List<FollowResponseItem>>
                 ) {
                     _isLoading.value = false
                     if (response.isSuccessful) {
-                        _followingResponse.value = response.body()?.followResponse
-                        Log.e(FollowViewModel.TAG, "onSuccess: ${response.message()}")
+                        _followingResponse.value = response.body()
+                        Log.e(TAG, "onSuccess: ${response.message()}")
                     } else {
-                        Log.e(FollowViewModel.TAG, "onFailure: ${response.message()}")
+                        Log.e(TAG, "onFailure: ${response.message()}")
                     }
                 }
 
-                override fun onFailure(call: Call<FollowResponse>, t: Throwable) {
+                override fun onFailure(call: Call<List<FollowResponseItem>>, t: Throwable) {
                     _isLoading.value = false
-                    Log.e(FollowViewModel.TAG, "onFailure: ${t.message.toString()}")
+                    Log.e(TAG, "onFailure: ${t.message.toString()}")
                 }
             })
         }

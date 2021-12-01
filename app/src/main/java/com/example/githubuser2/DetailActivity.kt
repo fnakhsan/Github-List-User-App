@@ -10,9 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.githubuser2.data.UserResponse
 import com.example.githubuser2.databinding.ActivityDetailBinding
-import com.example.githubuser2.fragment.FollowFragment
 import com.example.githubuser2.viewmodel.DetailViewModel
-import com.example.githubuser2.viewmodel.FollowViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -22,6 +20,7 @@ class DetailActivity : AppCompatActivity() {
     private val args: DetailActivityArgs by navArgs()
 
     companion object {
+        const val EXTRA_NAME = "extra_username"
         @StringRes
         private val TAB_TITLES = intArrayOf(
             R.string.follower,
@@ -44,12 +43,7 @@ class DetailActivity : AppCompatActivity() {
             showLoading(it)
         })
 
-        val viewPager: ViewPager2 = findViewById(R.id.view_pager)
-        viewPager.adapter = SectionsPagerAdapter(this, args.username)
-        val tabs: TabLayout = findViewById(R.id.tabs)
-        TabLayoutMediator(tabs, viewPager) { tab, position ->
-            tab.text = resources.getString(TAB_TITLES[position])
-        }.attach()
+        setViewPager(args.username)
         supportActionBar?.elevation = 0f
     }
 
@@ -65,6 +59,19 @@ class DetailActivity : AppCompatActivity() {
 
     private fun showLoading(it: Boolean) {
         detailBinding.progressBar2.visibility = if (it) View.VISIBLE else View.GONE
+    }
+
+    private fun setViewPager(username: String) {
+        val bundle = Bundle()
+        bundle.putString(EXTRA_NAME, username)
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, bundle)
+        val viewPager : ViewPager2 = detailBinding.viewPager
+        viewPager.adapter = sectionsPagerAdapter
+
+        val tabs : TabLayout = detailBinding.tabs
+        TabLayoutMediator(tabs, viewPager) { tab, position ->
+            tab.text = resources.getString(TAB_TITLES[position])
+        }.attach()
     }
 
 }
