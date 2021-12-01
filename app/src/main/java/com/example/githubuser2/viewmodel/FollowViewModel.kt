@@ -10,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FollowViewModel: ViewModel() {
+class FollowViewModel : ViewModel() {
     private val _followerResponse = MutableLiveData<List<FollowResponseItem>>()
     val followerResponse: LiveData<List<FollowResponseItem>> = _followerResponse
 
@@ -52,7 +52,7 @@ class FollowViewModel: ViewModel() {
 
     fun followingUser(githubFollowing: String) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService().getFollowersUsers(githubFollowing)
+        val client = ApiConfig.getApiService().getFollowingUsers(githubFollowing)
         with(client) {
             enqueue(object : Callback<List<FollowResponseItem>> {
                 override fun onResponse(

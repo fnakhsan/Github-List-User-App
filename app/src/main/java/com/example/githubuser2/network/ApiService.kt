@@ -1,7 +1,5 @@
 package com.example.githubuser2.network
 
-
-import com.example.githubuser2.data.FollowResponse
 import com.example.githubuser2.data.FollowResponseItem
 import com.example.githubuser2.data.SearchResponse
 import com.example.githubuser2.data.UserResponse

@@ -3,6 +3,7 @@ package com.example.githubuser2
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.navigation.navArgs
@@ -20,7 +21,6 @@ class DetailActivity : AppCompatActivity() {
     private val args: DetailActivityArgs by navArgs()
 
     companion object {
-        const val EXTRA_NAME = "extra_username"
         @StringRes
         private val TAB_TITLES = intArrayOf(
             R.string.follower,
@@ -32,6 +32,11 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         detailBinding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(detailBinding.root)
+
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
 
         detailViewModel.detailUser(args.username)
 
@@ -62,13 +67,11 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setViewPager(username: String) {
-        val bundle = Bundle()
-        bundle.putString(EXTRA_NAME, username)
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, bundle)
-        val viewPager : ViewPager2 = detailBinding.viewPager
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, username)
+        val viewPager: ViewPager2 = detailBinding.viewPager
         viewPager.adapter = sectionsPagerAdapter
 
-        val tabs : TabLayout = detailBinding.tabs
+        val tabs: TabLayout = detailBinding.tabs
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()

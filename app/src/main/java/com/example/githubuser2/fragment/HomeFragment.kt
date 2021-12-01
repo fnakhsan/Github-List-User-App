@@ -20,12 +20,6 @@ class HomeFragment : Fragment() {
 
     private lateinit var homeFragmentBinding: FragmentHomeBinding
     private val homeViewModel by viewModels<HomeViewModel>()
-//    private val homeFragmentBinding = _homeFragmentBinding!!
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,16 +57,11 @@ class HomeFragment : Fragment() {
                 override fun onQueryTextChange(newText: String): Boolean = false
             })
         }
-//        homeFragmentBinding.rvUser.setOnClickListener(
-//            Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_detailActivity))
-//        homeFragmentBinding.rvUser.setOnClickListener { view ->
-//            view.findNavController().navigate(R.id.action_homeFragment_to_detailActivity)
-//        }
     }
 
     private fun setListUsers(search: List<UserResponse>?) {
         val adapter = search?.let { UserAdapter(it) }
-        adapter?.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback{
+        adapter?.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: UserResponse) {
                 val toDetailFragment = HomeFragmentDirections.actionHomeFragmentToDetailActivity()
                 toDetailFragment.username = data.login
@@ -85,9 +74,4 @@ class HomeFragment : Fragment() {
     private fun showLoading(it: Boolean) {
         homeFragmentBinding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
     }
-
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        _homeFragmentBinding = null
-//    }
 }

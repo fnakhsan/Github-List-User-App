@@ -4,17 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavArgs
-import androidx.navigation.navArgs
-import com.example.githubuser2.DetailActivity
-import com.example.githubuser2.DetailActivityArgs
 import com.example.githubuser2.data.UserResponse
 import com.example.githubuser2.network.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DetailViewModel: ViewModel() {
+class DetailViewModel : ViewModel() {
     private val _detailResponse = MutableLiveData<UserResponse>()
     val detailResponse: LiveData<UserResponse> = _detailResponse
 
