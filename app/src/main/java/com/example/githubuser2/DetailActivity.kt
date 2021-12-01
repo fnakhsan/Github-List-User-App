@@ -53,10 +53,17 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setUserData(profile: UserResponse) {
+        val comp = profile.company
+        val loc = profile.location
+        detailBinding.tvItemId.text = profile.login
         detailBinding.tvItemUsername.text = profile.name
         detailBinding.tvItemRepo.text = profile.repository.toString()
         detailBinding.tvItemFollower.text = profile.followers.toString()
         detailBinding.tvItemFollowing.text = profile.following.toString()
+        detailBinding.tvItemLocation.text = profile.location?.toString()
+        detailBinding.tvItemCompany.text = profile.company?.toString()
+        detailBinding.tabLocation.visibility = if (profile.location == null) View.GONE else View.VISIBLE
+        detailBinding.tabCompany.visibility = if (profile.company == null) View.GONE else View.VISIBLE
         Glide.with(this@DetailActivity)
             .load(profile.avatarUrl)
             .into(detailBinding.imgItemPhoto)

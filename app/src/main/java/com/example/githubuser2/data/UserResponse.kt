@@ -23,7 +23,7 @@ data class UserResponse(
     val name: String,
 
     @field:SerializedName("location")
-    val location: Any,
+    val location: Any?,
 
     @field:SerializedName("id")
     val id: Int,
@@ -35,5 +35,8 @@ data class UserResponse(
     val followersUrl: String,
 
     @field:SerializedName("public_repos")
-    val repository: Int
+    val repository: Int,
+
+    @field:SerializedName("company")
+    val company: Any?
 )
