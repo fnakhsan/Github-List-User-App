@@ -11,21 +11,22 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubuser2.R
-import com.example.githubuser2.UserAdapter
+import com.example.githubuser2.adapter.UserAdapter
 import com.example.githubuser2.data.UserResponse
 import com.example.githubuser2.databinding.FragmentHomeBinding
 import com.example.githubuser2.viewmodel.HomeViewModel
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeFragmentBinding: FragmentHomeBinding
+    private var _homeFragmentBinding: FragmentHomeBinding? = null
+    private val homeFragmentBinding get() = _homeFragmentBinding!!
     private val homeViewModel by viewModels<HomeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        homeFragmentBinding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+        _homeFragmentBinding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return homeFragmentBinding.root
     }
 
@@ -37,13 +38,13 @@ class HomeFragment : Fragment() {
         val itemDecoration = DividerItemDecoration(context, layoutManager.orientation)
         homeFragmentBinding.rvUser.addItemDecoration(itemDecoration)
 
-        homeViewModel.searchResponse.observe(viewLifecycleOwner, { search ->
+        homeViewModel.searchResponse.observe(viewLifecycleOwner) { search ->
             setListUsers(search)
-        })
+        }
 
-        homeViewModel.isLoading.observe(viewLifecycleOwner, {
+        homeViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
-        })
+        }
 
         homeFragmentBinding.actionSearch.apply {
             queryHint = resources.getString(R.string.search)
@@ -57,6 +58,7 @@ class HomeFragment : Fragment() {
                 override fun onQueryTextChange(newText: String): Boolean = false
             })
         }
+
     }
 
     private fun setListUsers(search: List<UserResponse>?) {
@@ -73,5 +75,10 @@ class HomeFragment : Fragment() {
 
     private fun showLoading(it: Boolean) {
         homeFragmentBinding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _homeFragmentBinding = null
     }
 }

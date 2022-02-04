@@ -1,4 +1,4 @@
-package com.example.githubuser2
+package com.example.githubuser2.adapter
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment

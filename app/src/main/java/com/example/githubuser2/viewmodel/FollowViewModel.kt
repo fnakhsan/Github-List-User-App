@@ -20,9 +20,6 @@ class FollowViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    companion object {
-        private const val TAG = "FollowViewModel"
-    }
 
     fun followerUser(githubFollower: String) {
         _isLoading.value = true
@@ -36,7 +33,7 @@ class FollowViewModel : ViewModel() {
                     _isLoading.value = false
                     if (response.isSuccessful) {
                         _followerResponse.value = response.body()
-                        Log.e(TAG, "onSuccess: ${response.message()}")
+                        Log.e(TAG, "onSuccess: ${response.message()}, data: ${_followerResponse.value}")
                     } else {
                         Log.e(TAG, "onFailure: ${response.message()}")
                     }
@@ -62,7 +59,7 @@ class FollowViewModel : ViewModel() {
                     _isLoading.value = false
                     if (response.isSuccessful) {
                         _followingResponse.value = response.body()
-                        Log.e(TAG, "onSuccess: ${response.message()}")
+                        Log.e(TAG, "onSuccess: ${response.message()}, data: ${_followingResponse.value}")
                     } else {
                         Log.e(TAG, "onFailure: ${response.message()}")
                     }
@@ -74,6 +71,10 @@ class FollowViewModel : ViewModel() {
                 }
             })
         }
+    }
+
+    companion object {
+        private const val TAG = "FollowViewModel"
     }
 
 }

@@ -17,9 +17,6 @@ class DetailViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    companion object {
-        private const val TAG = "DetailViewModel"
-    }
 
     fun detailUser(githubProfile: String) {
         _isLoading.value = true
@@ -46,4 +43,9 @@ class DetailViewModel : ViewModel() {
             })
         }
     }
+
+    companion object {
+        private const val TAG = "DetailViewModel"
+    }
+
 }

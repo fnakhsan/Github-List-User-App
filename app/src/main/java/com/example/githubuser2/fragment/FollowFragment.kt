@@ -9,35 +9,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.githubuser2.FollowAdapter
+import com.example.githubuser2.adapter.FollowAdapter
 import com.example.githubuser2.data.FollowResponseItem
 import com.example.githubuser2.databinding.FragmentFollowBinding
 import com.example.githubuser2.viewmodel.FollowViewModel
 
 class FollowFragment : Fragment() {
-    private lateinit var followFragmentBinding: FragmentFollowBinding
+    private var _followFragmentBinding: FragmentFollowBinding? = null
+    private val followFragmentBinding get() = _followFragmentBinding!!
     private val followViewModel by viewModels<FollowViewModel>()
-
-    companion object {
-        private const val ARG_SECTION_NUMBER = "section_number"
-        private const val EXTRA_NAME = "username"
-        private const val TAG = "FollowFrag"
-
-        @JvmStatic
-        fun newInstance(index: Int, username: String) =
-            FollowFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_SECTION_NUMBER, index)
-                    putString(EXTRA_NAME, username)
-                }
-            }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        followFragmentBinding = FragmentFollowBinding.inflate(layoutInflater, container, false)
+        _followFragmentBinding = FragmentFollowBinding.inflate(layoutInflater, container, false)
         return followFragmentBinding.root
     }
 
@@ -60,22 +46,22 @@ class FollowFragment : Fragment() {
 
         when (argsNumber) {
             1 -> {
-                followViewModel.followerResponse.observe(viewLifecycleOwner, { follower ->
+                followViewModel.followerResponse.observe(viewLifecycleOwner) { follower ->
                     setFollowers(follower)
-                })
-                followViewModel.isLoading.observe(viewLifecycleOwner, {
+                }
+                followViewModel.isLoading.observe(viewLifecycleOwner) {
                     showLoading(it)
-                })
+                }
                 Log.d(TAG, "$argsNumber")
             }
 
             2 -> {
-                followViewModel.followingResponse.observe(viewLifecycleOwner, { following ->
+                followViewModel.followingResponse.observe(viewLifecycleOwner) { following ->
                     setfollowing(following)
-                })
-                followViewModel.isLoading.observe(viewLifecycleOwner, {
+                }
+                followViewModel.isLoading.observe(viewLifecycleOwner) {
                     showLoading(it)
-                })
+                }
                 Log.d(TAG, "$argsNumber")
             }
         }
@@ -94,5 +80,25 @@ class FollowFragment : Fragment() {
     private fun setfollowing(following: List<FollowResponseItem>?) {
         val adapter = following?.let { FollowAdapter(it) }
         followFragmentBinding.rvFollow.adapter = adapter
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _followFragmentBinding = null
+    }
+
+    companion object {
+        private const val ARG_SECTION_NUMBER = "section_number"
+        private const val EXTRA_NAME = "username"
+        private const val TAG = "FollowFrag"
+
+        @JvmStatic
+        fun newInstance(index: Int, username: String) =
+            FollowFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_SECTION_NUMBER, index)
+                    putString(EXTRA_NAME, username)
+                }
+            }
     }
 }

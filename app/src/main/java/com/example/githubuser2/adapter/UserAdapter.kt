@@ -1,4 +1,4 @@
-package com.example.githubuser2
+package com.example.githubuser2.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.githubuser2.R
 import com.example.githubuser2.data.UserResponse
 
 class UserAdapter(private val listUsers: List<UserResponse>) :

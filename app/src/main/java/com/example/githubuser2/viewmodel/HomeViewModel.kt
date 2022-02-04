@@ -19,9 +19,6 @@ class HomeViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    companion object {
-        private const val TAG = "HomeViewModel"
-    }
 
     init {
         findUser("a")
@@ -39,6 +36,7 @@ class HomeViewModel : ViewModel() {
                     _isLoading.value = false
                     if (response.isSuccessful) {
                         _searchResponse.value = response.body()?.items
+                        Log.d(TAG, "onSuccess: ${response.message()}, data: ${_searchResponse.value}")
                     } else {
                         Log.e(TAG, "onFailure: ${response.message()}")
                     }
@@ -50,6 +48,10 @@ class HomeViewModel : ViewModel() {
                 }
             })
         }
+    }
+
+    companion object {
+        private const val TAG = "HomeViewModel"
     }
 
 }
