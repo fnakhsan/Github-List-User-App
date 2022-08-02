@@ -38,14 +38,14 @@ class DetailActivity : AppCompatActivity() {
             )
         }
 
-        detailViewModel.detailUser(args.username)
-
-        detailViewModel.detailResponse.observe(this) { profile ->
-            setUserData(profile)
-        }
-
-        detailViewModel.isLoading.observe(this) {
-            showLoading(it)
+        detailViewModel.apply {
+            detailUser(args.username)
+            detailResponse.observe(this@DetailActivity) { profile ->
+                setUserData(profile)
+            }
+            isLoading.observe(this@DetailActivity) {
+                showLoading(it)
+            }
         }
 
         setViewPager(args.username)
@@ -53,7 +53,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setUserData(profile: UserResponse) {
-        with(detailBinding) {
+        detailBinding.apply {
             tvItemId.text = profile.login
             tvItemUsername.text = profile.name
             tvItemRepo.text = profile.repository.toString()

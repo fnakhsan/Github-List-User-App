@@ -31,12 +31,14 @@ class UserAdapter(private val listUsers: List<UserResponse>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val listUser = listUsers[position]
-        holder.tvName.text = listUser.login
-        Glide.with(holder.tvImage)
-            .load(listUser.avatarUrl)
-            .apply(RequestOptions().override(55, 55))
-            .into(holder.tvImage)
-        holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listUser) }
+        holder.apply {
+            tvName.text = listUser.login
+            Glide.with(tvImage)
+                .load(listUser.avatarUrl)
+                .apply(RequestOptions().override(55, 55))
+                .into(tvImage)
+            itemView.setOnClickListener { onItemClickCallback.onItemClicked(listUser) }
+        }
     }
 
     override fun getItemCount() = listUsers.size
