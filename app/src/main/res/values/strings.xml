@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">GithubUser3</string>
+    <string name="title">gu</string>
+    <string name="github_user_app">Github List User App</string>
+    <string name="user_name">Nama Pengguna</string>
+    <string name="detail">Detail</string>
+    <string name="list">List</string>
+    <string name="repository">Repositori</string>
+    <string name="follower">Pengikut</string>
+    <string name="following">Mengikuti</string>
+    <string name="test">test</string>
+    <string name="location">Lokasi :</string>
+    <string name="company">Perusahaan :</string>
+    <string name="share">share</string>
+    <string name="search">Search</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
