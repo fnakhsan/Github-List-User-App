@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubuser3.R
 import com.example.githubuser3.data.model.UserModel
 import com.example.githubuser3.databinding.FragmentDashboardBinding
+import com.example.githubuser3.ui.adapter.UserAdapter
 
 class DashboardFragment : Fragment() {
-
     private lateinit var dashboardBinding: FragmentDashboardBinding
     private val homeViewModel by viewModels<DashboardViewModel>()
 
