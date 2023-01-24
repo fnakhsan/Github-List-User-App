@@ -2,17 +2,19 @@
     <string name="app_name">GithubUser3</string>
     <string name="title">gu</string>
     <string name="github_user_app">Github List User App</string>
-    <string name="user_name">Nama Pengguna</string>
+    <string name="user_name">Username</string>
     <string name="detail">Detail</string>
     <string name="list">List</string>
-    <string name="repository">Repositori</string>
-    <string name="follower">Pengikut</string>
-    <string name="following">Mengikuti</string>
+    <string name="repository">Repository</string>
+    <string name="follower">Follower</string>
+    <string name="following">Following</string>
     <string name="test">test</string>
-    <string name="location">Lokasi :</string>
-    <string name="company">Perusahaan :</string>
+    <string name="location">Location :</string>
+    <string name="company">Company :</string>
     <string name="share">share</string>
     <string name="search">Search</string>
+    <string name="title_home">Home</string>
+    <string name="title_favorite">Favorite</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

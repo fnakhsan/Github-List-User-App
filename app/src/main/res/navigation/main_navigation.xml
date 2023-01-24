@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.example.githubuser3.ui.main.DashboardFragment"
+        android:name="com.example.githubuser3.ui.main.HomeFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard">
         <action

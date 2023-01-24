@@ -11,7 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DashboardViewModel: ViewModel() {
+class HomeViewModel: ViewModel() {
     private val _searchResponse = MutableLiveData<List<UserModel>>()
     val searchResponse: LiveData<List<UserModel>> = _searchResponse
 

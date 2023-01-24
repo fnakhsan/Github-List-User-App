@@ -15,9 +15,9 @@ import com.example.githubuser3.data.model.UserModel
 import com.example.githubuser3.databinding.FragmentDashboardBinding
 import com.example.githubuser3.ui.adapter.UserAdapter
 
-class DashboardFragment : Fragment() {
+class HomeFragment : Fragment() {
     private lateinit var dashboardBinding: FragmentDashboardBinding
-    private val homeViewModel by viewModels<DashboardViewModel>()
+    private val homeViewModel by viewModels<HomeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,7 +61,7 @@ class DashboardFragment : Fragment() {
         val adapter = search?.let { UserAdapter(it) }
         adapter?.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: UserModel) {
-                val toDetailFragment = DashboardFragmentDirections.actionHomeFragmentToDetailActivity()
+                val toDetailFragment = HomeFragmentDirections.actionHomeFragmentToDetailActivity()
                 toDetailFragment.username = data.login
                 findNavController().navigate(toDetailFragment)
             }
