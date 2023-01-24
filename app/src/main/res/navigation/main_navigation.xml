@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.example.githubuser3.ui.main.HomeFragment"
+        android:name="com.example.githubuser3.ui.home.HomeFragment"
         android:label="fragment_dashboard"
-        tools:layout="@layout/fragment_dashboard">
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_detailActivity"
             app:destination="@id/detailActivity" />

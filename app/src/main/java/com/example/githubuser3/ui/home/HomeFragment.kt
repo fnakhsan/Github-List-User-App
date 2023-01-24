@@ -1,4 +1,4 @@
-package com.example.githubuser3.ui.main
+package com.example.githubuser3.ui.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,28 +12,28 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubuser3.R
 import com.example.githubuser3.data.model.UserModel
-import com.example.githubuser3.databinding.FragmentDashboardBinding
+import com.example.githubuser3.databinding.FragmentHomeBinding
 import com.example.githubuser3.ui.adapter.UserAdapter
 
 class HomeFragment : Fragment() {
-    private lateinit var dashboardBinding: FragmentDashboardBinding
+    private lateinit var binding: FragmentHomeBinding
     private val homeViewModel by viewModels<HomeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        dashboardBinding = FragmentDashboardBinding.inflate(layoutInflater, container, false)
-        return dashboardBinding.root
+        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        dashboardBinding.rvUser.layoutManager = layoutManager
+        binding.rvUser.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(context, layoutManager.orientation)
-        dashboardBinding.rvUser.addItemDecoration(itemDecoration)
+        binding.rvUser.addItemDecoration(itemDecoration)
 
         homeViewModel.searchResponse.observe(viewLifecycleOwner) { search ->
             setListUsers(search)
@@ -43,12 +43,12 @@ class HomeFragment : Fragment() {
             showLoading(it)
         }
 
-        dashboardBinding.actionSearch.apply {
+        binding.actionSearch.apply {
             queryHint = resources.getString(R.string.search)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     homeViewModel.findUser(query)
-                    dashboardBinding.actionSearch.clearFocus()
+                    binding.actionSearch.clearFocus()
                     return true
                 }
 
@@ -66,11 +66,11 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(toDetailFragment)
             }
         })
-        dashboardBinding.rvUser.adapter = adapter
+        binding.rvUser.adapter = adapter
     }
 
     private fun showLoading(it: Boolean) {
-        dashboardBinding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
+        binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
     }
 
     companion object {
