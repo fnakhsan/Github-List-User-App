@@ -16,4 +16,5 @@
     <string name="search">Pencarian</string>
     <string name="title_home">Home</string>
     <string name="title_favorite">Favorite</string>
+    <string name="title_setting">Setting</string>
 </resources>

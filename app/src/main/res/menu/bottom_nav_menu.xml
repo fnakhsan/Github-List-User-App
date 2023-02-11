@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/bottom_nav_home"
         android:icon="@drawable/ic_home_default_light"
         android:title="@string/title_home" />
     <item
         android:id="@+id/bottom_nav_favorite"
-        android:icon="@drawable/ic_home_default_light"
+        android:icon="@drawable/ic_favorite_default_light"
         android:title="@string/title_favorite" />
+    <item
+        android:id="@+id/bottom_nav_setting"
+        android:icon="@drawable/ic_settings_default_light"
+        android:title="@string/title_setting" />
 </menu>
