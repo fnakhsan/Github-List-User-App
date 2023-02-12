@@ -20,7 +20,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/search" />
+            app:defaultQueryHint="@string/search"
+            app:queryHint="@string/search"
+            app:iconifiedByDefault="false"/>
     </androidx.cardview.widget.CardView>
 
     <ProgressBar
@@ -39,6 +41,7 @@
         android:id="@+id/rv_user"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

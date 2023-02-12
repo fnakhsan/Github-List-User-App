@@ -39,6 +39,7 @@ class DetailActivity : AppCompatActivity() {
             )
         }
         username = intent?.getStringExtra(EXTRA_USERNAME) ?: args.username
+        supportActionBar?.title = username
 
         detailViewModel.apply {
             detailUser(username)

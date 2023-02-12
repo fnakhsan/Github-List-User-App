@@ -1,11 +1,12 @@
 package com.example.githubuser3.ui.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -45,10 +46,11 @@ class HomeFragment : Fragment() {
 
         binding.actionSearch.apply {
             queryHint = resources.getString(R.string.search)
+            Log.d(TAG, queryHint.toString())
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     homeViewModel.findUser(query)
-                    binding.actionSearch.clearFocus()
+                    clearFocus()
                     return true
                 }
 
@@ -74,6 +76,6 @@ class HomeFragment : Fragment() {
     }
 
     companion object {
-
+        const val TAG = "HomeFragment"
     }
 }
