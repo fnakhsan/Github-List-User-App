@@ -20,7 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/search" />
+            android:hint="@string/search"
+            app:iconifiedByDefault="false"/>
     </androidx.cardview.widget.CardView>
 
     <ProgressBar
