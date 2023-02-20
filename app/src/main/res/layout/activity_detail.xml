@@ -192,8 +192,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
+        app:tabIndicatorColor="@color/blue"
         app:layout_constraintTop_toBottomOf="@id/info_layout"
-        app:tabTextColor="@android:color/white" />
+        app:tabTextColor="?android:textColorPrimary" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
