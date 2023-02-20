@@ -17,6 +17,5 @@
     <string name="title_home">Home</string>
     <string name="title_favorite">Favorite</string>
     <string name="title_setting">Setting</string>
-    <string name="intent">Username : %username$s\nGithub Link : %link$s\nNama : %nama$s\nLokasi :
-        %lokasi$s\nPerusahaan : %perusahaan$s\nPengikut : %pengikut$d.</string>
+    <string name="intent">Username : %1$s\nGithub Link : %2$s\nNama : %3$s.</string>
 </resources>
