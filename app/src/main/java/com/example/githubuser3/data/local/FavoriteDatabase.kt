@@ -5,10 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.githubuser3.data.model.FavoriteModel
+import com.example.githubuser3.data.model.UserModel
 
 @Database(
     entities = [
-        FavoriteModel::class
+        UserModel::class
     ],
     exportSchema = false,
     version = 1

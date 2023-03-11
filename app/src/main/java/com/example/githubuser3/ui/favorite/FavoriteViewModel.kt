@@ -1,15 +1,13 @@
 package com.example.githubuser3.ui.favorite
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.example.githubuser3.data.local.FavoriteRepository
-import com.example.githubuser3.data.model.FavoriteModel
+import androidx.lifecycle.ViewModel
+import com.example.githubuser3.data.Repository
+import com.example.githubuser3.data.model.UserModel
 
-class FavoriteViewModel(application: Application): AndroidViewModel(application) {
-    private val repository: FavoriteRepository = FavoriteRepository(application)
+class FavoriteViewModel(private val repository: Repository): ViewModel() {
 
-    fun getAllChanges(): LiveData<List<FavoriteModel>> = repository.getAllChanges()
+    fun getAllChanges(): LiveData<List<UserModel>> = repository.getAllChanges()
 
-    suspend fun getAll(): List<FavoriteModel> = repository.getAll()
+    suspend fun getAll(): List<UserModel> = repository.getAll()
 }

@@ -10,25 +10,25 @@ import retrofit2.http.*
 interface ApiService {
     @GET("search/users")
     @Headers("Authorization: ${BuildConfig.GITHUB_TOKEN}")
-    fun getListUsers(
+    suspend fun getListUsers(
         @Query("q") q: String?
-    ): Call<SearchModel>
+    ): SearchModel
 
     @GET("users/{login}")
     @Headers("Authorization: ${BuildConfig.GITHUB_TOKEN}")
-    fun getDetailUsers(
+    suspend fun getDetailUsers(
         @Path("login") id: String?
-    ): Call<UserModel>
+    ): UserModel
 
     @GET("users/{login}/followers")
     @Headers("Authorization: ${BuildConfig.GITHUB_TOKEN}")
-    fun getFollowersUsers(
+    suspend fun getFollowersUsers(
         @Path("login") id: String?
-    ): Call<List<FollowModel>>
+    ): List<FollowModel>
 
     @GET("users/{login}/following")
     @Headers("Authorization: ${BuildConfig.GITHUB_TOKEN}")
-    fun getFollowingUsers(
+    suspend fun getFollowingUsers(
         @Path("login") id: String?
-    ): Call<List<FollowModel>>
+    ): List<FollowModel>
 }

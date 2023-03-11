@@ -1,41 +1,52 @@
 package com.example.githubuser3.data.model
 
+import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Entity
+@Parcelize
 data class UserModel(
-    @field:SerializedName("followers")
-    val followers: Int,
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "login")
+    @field:SerializedName("login")
+    var login: String = "",
+
+    @ColumnInfo(name = "name")
+    @field:SerializedName("name")
+    var name: String = "",
 
     @field:SerializedName("avatar_url")
-    val avatarUrl: String,
-
-    @field:SerializedName("html_url")
-    val htmlUrl: String,
-
-    @field:SerializedName("following_url")
-    val followingUrl: String,
-
-    @field:SerializedName("following")
-    val following: Int,
-
-    @field:SerializedName("name")
-    val name: String,
-
-    @field:SerializedName("location")
-    val location: Any?,
-
-    @field:SerializedName("id")
-    val id: Int,
-
-    @field:SerializedName("login")
-    val login: String,
-
-    @field:SerializedName("followers_url")
-    val followersUrl: String,
+    @ColumnInfo(name = "avatar_url")
+    var avatar_url: String = "",
 
     @field:SerializedName("public_repos")
+    @ColumnInfo(name = "public_repos")
     val repository: Int,
 
+    @field:SerializedName("followers")
+    @ColumnInfo(name = "followers")
+    val followers: Int,
+
+    @field:SerializedName("following")
+    @ColumnInfo(name = "following")
+    val following: Int,
+
+    @field:SerializedName("html_url")
+    @ColumnInfo(name = "html_url")
+    val htmlUrl: String,
+
+    @field:SerializedName("location")
+    @ColumnInfo(name = "location")
+    val location: String?,
+
     @field:SerializedName("company")
-    val company: Any?
-)
+    @ColumnInfo(name = "company")
+    val company: String?
+
+//@ColumnInfo(name = "isFavorite")
+//var isFavorite: Boolean? = false
+) : Parcelable
