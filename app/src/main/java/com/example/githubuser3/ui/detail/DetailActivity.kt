@@ -33,7 +33,7 @@ class DetailActivity : AppCompatActivity() {
     private var name: String = ""
 
     //    private val detailViewModel by viewModels<DetailViewModel>()
-    private lateinit var factory: ViewModelFactory
+//    private lateinit var factory: ViewModelFactory
 
     private val args: DetailActivityArgs by navArgs()
     private var favStatus: Boolean = false
@@ -48,7 +48,7 @@ class DetailActivity : AppCompatActivity() {
         Log.d(TAG, username)
         Log.d(TAG, "test")
 
-        factory = ViewModelFactory.getInstance(this)
+        val factory = ViewModelFactory.getInstance(this@DetailActivity)
         val detailViewModel: DetailViewModel by viewModels {
             factory
         }
@@ -59,10 +59,10 @@ class DetailActivity : AppCompatActivity() {
                     Log.d(TAG, "observe view model")
                     when (it) {
                         is Resource.Success -> {
-                            lifecycleScope.launch(Dispatchers.IO) {
+//                            lifecycleScope.launch(Dispatchers.IO) {
                                 setUserData(it.data)
                                 Log.d(TAG, it.toString())
-                            }
+//                            }
                             showLoading(false)
                         }
                         is Resource.Error -> {
@@ -204,7 +204,7 @@ class DetailActivity : AppCompatActivity() {
         }
 
         Glide.with(this@DetailActivity)
-            .load(profile.htmlUrl)
+            .load(profile.avatar_url)
             .into(detailBinding.imgItemPhoto)
     }
 

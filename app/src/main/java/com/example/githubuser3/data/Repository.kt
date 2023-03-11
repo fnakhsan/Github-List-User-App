@@ -7,6 +7,7 @@ import com.example.githubuser3.data.local.FavoriteDao
 import com.example.githubuser3.data.model.FollowModel
 import com.example.githubuser3.data.model.UserModel
 import com.example.githubuser3.data.network.ApiService
+import kotlinx.coroutines.Dispatchers
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -48,7 +49,7 @@ class Repository(
         }
     }
 
-    fun detailUser(githubProfile: String): LiveData<Resource<UserModel>> = liveData {
+    fun detailUser(githubProfile: String): LiveData<Resource<UserModel>> = liveData(Dispatchers.IO) {
         emit(Resource.Loading)
         Log.d(TAG, "detailUser")
         try {
@@ -62,6 +63,9 @@ class Repository(
             Log.d(TAG, "detailUser: ${e.message.toString()}")
             emit(Resource.Error(e.message.toString()))
         }
+//        val localData: LiveData<Result<List<NewsEntity>>> =
+//            newsDao.getNews().map { Result.Success(it) }
+//        emitSource(localData)
     }
 
     fun followerUser(githubFollower: String): LiveData<Resource<List<FollowModel>>> = liveData {
