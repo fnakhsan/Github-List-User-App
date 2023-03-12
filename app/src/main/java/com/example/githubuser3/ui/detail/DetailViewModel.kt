@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.githubuser3.data.Repository
 import com.example.githubuser3.data.model.UserModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DetailViewModel(private val repository: Repository) : ViewModel() {

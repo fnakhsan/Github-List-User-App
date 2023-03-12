@@ -36,7 +36,12 @@ class DetailActivity : AppCompatActivity() {
 //    private lateinit var factory: ViewModelFactory
 
     private val args: DetailActivityArgs by navArgs()
+
     private var favStatus: Boolean = false
+    private val factory = ViewModelFactory.getInstance(this@DetailActivity)
+    private val detailViewModel: DetailViewModel by viewModels {
+        factory
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,33 +53,28 @@ class DetailActivity : AppCompatActivity() {
         Log.d(TAG, username)
         Log.d(TAG, "test")
 
-        val factory = ViewModelFactory.getInstance(this@DetailActivity)
-        val detailViewModel: DetailViewModel by viewModels {
-            factory
-        }
-
         detailViewModel.apply {
             Log.d(TAG, "masuk view model")
-                getDetail(username).observe(this@DetailActivity) {
-                    Log.d(TAG, "observe view model")
-                    when (it) {
-                        is Resource.Success -> {
+            getDetail(username).observe(this@DetailActivity) {
+                Log.d(TAG, "observe view model")
+                when (it) {
+                    is Resource.Success -> {
 //                            lifecycleScope.launch(Dispatchers.IO) {
-                                setUserData(it.data)
-                                Log.d(TAG, it.toString())
+                        setUserData(it.data)
+                        Log.d(TAG, it.toString())
 //                            }
-                            showLoading(false)
-                        }
-                        is Resource.Error -> {
-                            Log.d(TAG, it.error)
-                            showLoading(false)
-                        }
-                        is Resource.Loading -> showLoading(true)
+                        showLoading(false)
                     }
+                    is Resource.Error -> {
+                        Log.d(TAG, it.error)
+                        showLoading(false)
+                    }
+                    is Resource.Loading -> showLoading(true)
                 }
+            }
 //                if (isFavorite(username)) {
 //                }
-                Log.d(TAG, "akhir view model")
+            Log.d(TAG, "akhir view model")
 
         }
 
@@ -101,17 +101,17 @@ class DetailActivity : AppCompatActivity() {
         Log.d(TAG, "onCreateMenu")
         menuInflater.inflate(R.menu.menu_detail, menu)
 
-//        val fav = menu?.findItem(R.id.action_favorite)
-//        favStatus = detailViewModel.isFavorite(username)
-//        when (favStatus) {
-//            true -> {
-//                fav?.setIcon(R.drawable.ic_favorite_default)
-//            }
-//            false -> {
-//                fav?.setIcon(R.drawable.ic_favorite_selected)
-//            }
-//        }
-
+        val fav = menu?.findItem(R.id.action_favorite)
+        lifecycleScope.launch(Dispatchers.IO) {
+            when (detailViewModel.isFavorite(username)) {
+                true -> {
+                    fav?.setIcon(R.drawable.ic_favorite_selected)
+                }
+                false -> {
+                    fav?.setIcon(R.drawable.ic_favorite_default)
+                }
+            }
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -133,55 +133,49 @@ class DetailActivity : AppCompatActivity() {
                 startActivity(shareIntent)
             }
             R.id.action_favorite -> {
-//                when (favStatus) {
-//                    true -> {
-//                        detailViewModel.apply {
-//                            getDetail(username).observe(this@DetailActivity) {
-//                                when (it) {
-//                                    is Resource.Success -> {
-//                                        val user: UserModel = it.data
-//                                        deleteFavUser(user)
-//                                    }
-//                                    is Resource.Error -> {
-//                                        Log.d(TAG, it.error)
-//                                    }
-//                                    is Resource.Loading -> showLoading(true)
-//                                }
-//                            }
-//                        }
-//                        item.setIcon(R.drawable.ic_favorite_default)
-//                        favStatus = false
-//                        Toast.makeText(
-//                            this,
-//                            "Disliked $title",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
-//                    false -> {
-//
-//                        detailViewModel.apply {
-//                            getDetail(username).observe(this@DetailActivity) {
-//                                when (it) {
-//                                    is Resource.Success -> {
-//                                        val user: UserModel = it.data
-//                                        setFavUser(user)
-//                                    }
-//                                    is Resource.Error -> {
-//                                        Log.d(TAG, it.error)
-//                                    }
-//                                    is Resource.Loading -> showLoading(true)
-//                                }
-//                            }
-//                        }
-//                        item.setIcon(R.drawable.ic_favorite_selected)
-//                        favStatus = true
-//                        Toast.makeText(
-//                            this,
-//                            "Liked $title",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
-//                }
+                detailViewModel.apply {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        favStatus = isFavorite(username)
+                    }
+                    Log.d(TAG, "harusnya aman")
+                    getDetail(username).observe(this@DetailActivity) {
+                        when (it) {
+                            is Resource.Success -> {
+                                val user: UserModel = it.data
+                                when (favStatus) {
+                                    true -> {
+                                        deleteFavUser(user)
+                                        Log.d(TAG, "Success delete: ${it.data}")
+                                        item.setIcon(R.drawable.ic_favorite_default)
+                                        Toast.makeText(
+                                            this@DetailActivity,
+                                            "Disliked ${supportActionBar?.title}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        Log.d(TAG, "finish true")
+                                    }
+                                    false -> {
+                                        setFavUser(user)
+                                        Log.d(TAG, "Success insert: ${it.data}")
+                                        item.setIcon(R.drawable.ic_favorite_selected)
+                                        Toast.makeText(
+                                            this@DetailActivity,
+                                            "Liked ${supportActionBar?.title}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        Log.d(TAG, "finish false")
+                                    }
+                                }
+                                showLoading(false)
+                            }
+                            is Resource.Error -> {
+                                Log.d(TAG, it.error)
+                                showLoading(false)
+                            }
+                            is Resource.Loading -> showLoading(true)
+                        }
+                    }
+                }
             }
         }
         return super.onOptionsItemSelected(item)
