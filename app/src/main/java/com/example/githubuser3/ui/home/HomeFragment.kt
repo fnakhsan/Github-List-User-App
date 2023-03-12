@@ -42,13 +42,6 @@ class HomeFragment : Fragment() {
         val homeViewModel: HomeViewModel by viewModels {
             factory
         }
-//        homeViewModel.searchResponse.observe(viewLifecycleOwner) { search ->
-//            setListUsers(search)
-//        }
-//
-//        homeViewModel.isLoading.observe(viewLifecycleOwner) {
-//            showLoading(it)
-//        }
 
         homeViewModel.searchUser("a").observe(viewLifecycleOwner) {
             Log.d(TAG, "masuk observe")
@@ -86,7 +79,6 @@ class HomeFragment : Fragment() {
                             }
                         }
                     }
-//                    homeViewModel.searchUser(query)
                     clearFocus()
                     return true
                 }

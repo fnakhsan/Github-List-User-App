@@ -9,5 +9,5 @@ class FavoriteViewModel(private val repository: Repository): ViewModel() {
 
     fun getAllChanges(): LiveData<List<UserModel>> = repository.getAllChanges()
 
-    suspend fun getAll(): List<UserModel> = repository.getAll()
+    fun searchFav(name: String): LiveData<List<UserModel>> = repository.searchFav(name)
 }

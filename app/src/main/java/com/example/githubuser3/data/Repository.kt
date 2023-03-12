@@ -15,19 +15,6 @@ class Repository(
     private val apiService: ApiService,
     private val mFavDao: FavoriteDao,
 ) {
-//    private val _searchResponse = MutableLiveData<List<UserModel>>()
-//    val searchResponse: LiveData<List<UserModel>> = _searchResponse
-//
-//    private val _detailResponse = MutableLiveData<UserModel>()
-//    val detailResponse: LiveData<UserModel> = _detailResponse
-//
-//    private val _followerResponse = MutableLiveData<List<FollowModel>>()
-//    val followerResponse: LiveData<List<FollowModel>> = _followerResponse
-//
-//    private val _followingResponse = MutableLiveData<List<FollowModel>>()
-//    val followingResponse: LiveData<List<FollowModel>> = _followingResponse
-
-    //    private val mFavDao: FavoriteDao
     private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
 
 //    private val _isLoading = MutableLiveData<Boolean>()
@@ -90,117 +77,13 @@ class Repository(
         }
     }
 
-//    fun findUser(githubName: String) {
-//        _isLoading.value = true
-//        val client = ApiConfig.getApiService().getListUsers(githubName)
-//        with(client) {
-//            enqueue(object : Callback<SearchModel> {
-//                override fun onResponse(
-//                    call: Call<SearchModel>,
-//                    response: Response<SearchModel>
-//                ) {
-//                    _isLoading.value = false
-//                    if (response.isSuccessful) {
-//                        _searchResponse.value = response.body()?.items
-//                        Log.d(TAG, "onSuccess: ${response.message()}, data: ${_searchResponse.value}")
-//                    } else {
-//                        Log.e(TAG, "onFailure: ${response.message()}")
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<SearchModel>, t: Throwable) {
-//                    _isLoading.value = false
-//                    Log.e(TAG, "onFailure: ${t.message.toString()}")
-//                }
-//            })
-//        }
-//    }
-//
-//    fun detailUser(githubProfile: String) {
-//        _isLoading.value = true
-//        val client = ApiConfig.getApiService().getDetailUsers(githubProfile)
-//        with(client) {
-//            enqueue(object : Callback<UserModel> {
-//                override fun onResponse(
-//                    call: Call<UserModel>,
-//                    response: Response<UserModel>
-//                ) {
-//                    _isLoading.value = false
-//                    if (response.isSuccessful) {
-//                        _detailResponse.value = response.body()
-//                        Log.e(TAG, "onSuccess: ${response.message()}")
-//                    } else {
-//                        Log.e(TAG, "onFailure: ${response.message()}")
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<UserModel>, t: Throwable) {
-//                    _isLoading.value = false
-//                    Log.e(TAG, "onFailure: ${t.message.toString()}")
-//                }
-//            })
-//        }
-//    }
-//
-//    fun followerUser(githubFollower: String) {
-//        _isLoading.value = true
-//        val client = ApiConfig.getApiService().getFollowersUsers(githubFollower)
-//        with(client) {
-//            enqueue(object : Callback<List<FollowModel>> {
-//                override fun onResponse(
-//                    call: Call<List<FollowModel>>,
-//                    response: Response<List<FollowModel>>
-//                ) {
-//                    _isLoading.value = false
-//                    if (response.isSuccessful) {
-//                        _followerResponse.value = response.body()
-//                        Log.e(TAG, "onSuccess: ${response.message()}, data: ${_followerResponse.value}")
-//                    } else {
-//                        Log.e(TAG, "onFailure: ${response.message()}")
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<List<FollowModel>>, t: Throwable) {
-//                    _isLoading.value = false
-//                    Log.e(TAG, "onFailure: ${t.message.toString()}")
-//                }
-//            })
-//        }
-//    }
-//
-//    fun followingUser(githubFollowing: String) {
-//        _isLoading.value = true
-//        val client = ApiConfig.getApiService().getFollowingUsers(githubFollowing)
-//        with(client) {
-//            enqueue(object : Callback<List<FollowModel>> {
-//                override fun onResponse(
-//                    call: Call<List<FollowModel>>,
-//                    response: Response<List<FollowModel>>
-//                ) {
-//                    _isLoading.value = false
-//                    if (response.isSuccessful) {
-//                        _followingResponse.value = response.body()
-//                        Log.e(TAG, "onSuccess: ${response.message()}, data: ${_followingResponse.value}")
-//                    } else {
-//                        Log.e(TAG, "onFailure: ${response.message()}")
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<List<FollowModel>>, t: Throwable) {
-//                    _isLoading.value = false
-//                    Log.e(TAG, "onFailure: ${t.message.toString()}")
-//                }
-//            })
-//        }
-//    }
-
     suspend fun insert(favorite: UserModel) {
         mFavDao.insert(favorite)
     }
 
     fun getAllChanges(): LiveData<List<UserModel>> = mFavDao.getAllChanges()
 
-    suspend fun getAll(): List<UserModel> = mFavDao.getAll()
+    fun searchFav(name: String): LiveData<List<UserModel>> = mFavDao.searchFav(name)
 
     fun isFavorite(name: String): Boolean = mFavDao.isFavorite(name)
 

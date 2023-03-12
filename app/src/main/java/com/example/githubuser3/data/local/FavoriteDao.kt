@@ -12,8 +12,8 @@ interface FavoriteDao {
     @Query("SELECT * FROM UserModel")
     fun getAllChanges(): LiveData<List<UserModel>>
 
-    @Query("SELECT * FROM UserModel")
-    suspend fun getAll(): List<UserModel>
+    @Query("SELECT * FROM UserModel where UserModel.login = :name")
+    fun searchFav(name: String): LiveData<List<UserModel>>
 
     @Query("SELECT * FROM UserModel where UserModel.login = :name")
     fun getFav(name: String): UserModel

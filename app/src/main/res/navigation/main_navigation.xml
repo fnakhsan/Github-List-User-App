@@ -27,7 +27,11 @@
         android:id="@+id/favoriteFragment"
         android:name="com.example.githubuser3.ui.favorite.FavoriteFragment"
         android:label="fragment_favorite"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_detailActivity"
+            app:destination="@id/detailActivity" />
+    </fragment>
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.example.githubuser3.ui.setting.SettingFragment"
