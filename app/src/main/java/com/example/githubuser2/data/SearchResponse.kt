@@ -3,7 +3,6 @@ package com.example.githubuser2.data
 import com.google.gson.annotations.SerializedName
 
 data class SearchResponse(
-
     @field:SerializedName("total_count")
     val totalCount: Int,
 

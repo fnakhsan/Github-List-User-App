@@ -62,15 +62,28 @@ class HomeFragment : Fragment() {
     }
 
     private fun setListUsers(search: List<UserResponse>?) {
-        val adapter = search?.let { UserAdapter(it) }
-        adapter?.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: UserResponse) {
-                val toDetailFragment = HomeFragmentDirections.actionHomeFragmentToDetailActivity()
-                toDetailFragment.username = data.login
-                findNavController().navigate(toDetailFragment)
+        if (search?.size == 0){
+            homeFragmentBinding.apply {
+                rvUser.visibility = View.INVISIBLE
+                tvSearchNotFound.visibility = View.VISIBLE
+                ivSearchNotFound.visibility = View.VISIBLE
             }
-        })
-        homeFragmentBinding.rvUser.adapter = adapter
+        } else {
+            val adapter = search?.let { UserAdapter(it) }
+            adapter?.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
+                override fun onItemClicked(data: UserResponse) {
+                    val toDetailFragment = HomeFragmentDirections.actionHomeFragmentToDetailActivity()
+                    toDetailFragment.username = data.login
+                    findNavController().navigate(toDetailFragment)
+                }
+            })
+            homeFragmentBinding.apply {
+                rvUser.adapter = adapter
+                tvSearchNotFound.visibility = View.INVISIBLE
+                ivSearchNotFound.visibility = View.INVISIBLE
+                rvUser.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun showLoading(it: Boolean) {

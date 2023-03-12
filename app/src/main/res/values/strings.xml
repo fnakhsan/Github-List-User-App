@@ -1,16 +1,17 @@
 <resources>
     <string name="app_name">GithubUser2</string>
-    <string name="title">gu</string>
-    <string name="github_user_app">Github List User App</string>
     <string name="user_name">Nama Pengguna</string>
     <string name="detail">Detail</string>
     <string name="list">List</string>
     <string name="repository">Repositori</string>
     <string name="follower">Pengikut</string>
     <string name="following">Mengikuti</string>
-    <string name="test">test</string>
     <string name="location">Lokasi :</string>
     <string name="company">Perusahaan :</string>
     <string name="share">share</string>
     <string name="search">Search</string>
+    <string name="search_not_found">Maaf pengguna yang anda cari\ntidak ditemukan</string>
+    <string name="follower_not_found">%1$s tidak memiliki pengikut</string>
+    <string name="following_not_found">%1$s tidak mengikuti siapapun</string>
+    <string name="follow_not_found">not found</string>
 </resources>

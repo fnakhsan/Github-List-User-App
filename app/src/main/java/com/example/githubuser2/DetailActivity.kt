@@ -1,11 +1,8 @@
 package com.example.githubuser2
 
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.navigation.navArgs
@@ -28,16 +25,6 @@ class DetailActivity : AppCompatActivity() {
         detailBinding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(detailBinding.root)
 
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
-
         detailViewModel.apply {
             detailUser(args.username)
             detailResponse.observe(this@DetailActivity) { profile ->
@@ -49,6 +36,7 @@ class DetailActivity : AppCompatActivity() {
         }
 
         setViewPager(args.username)
+        supportActionBar?.title = args.username
         supportActionBar?.elevation = 0f
     }
 

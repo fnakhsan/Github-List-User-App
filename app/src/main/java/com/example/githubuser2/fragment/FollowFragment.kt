@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubuser2.R
 import com.example.githubuser2.adapter.FollowAdapter
 import com.example.githubuser2.data.FollowResponseItem
 import com.example.githubuser2.databinding.FragmentFollowBinding
@@ -47,7 +48,7 @@ class FollowFragment : Fragment() {
         when (argsNumber) {
             1 -> {
                 followViewModel.followerResponse.observe(viewLifecycleOwner) { follower ->
-                    setFollowers(follower)
+                    setFollowers(follower, argsName)
                 }
                 followViewModel.isLoading.observe(viewLifecycleOwner) {
                     showLoading(it)
@@ -57,7 +58,7 @@ class FollowFragment : Fragment() {
 
             2 -> {
                 followViewModel.followingResponse.observe(viewLifecycleOwner) { following ->
-                    setfollowing(following)
+                    setFollowing(following, argsName)
                 }
                 followViewModel.isLoading.observe(viewLifecycleOwner) {
                     showLoading(it)
@@ -72,14 +73,43 @@ class FollowFragment : Fragment() {
         followFragmentBinding.progressBar.visibility = if (it == true) View.VISIBLE else View.GONE
     }
 
-    private fun setFollowers(follower: List<FollowResponseItem>?) {
-        val adapter = follower?.let { FollowAdapter(it) }
-        followFragmentBinding.rvFollow.adapter = adapter
+    private fun setFollowers(follower: List<FollowResponseItem>?, username: String?) {
+        if (follower?.size == 0){
+            followFragmentBinding.apply {
+                rvFollow.visibility = View.INVISIBLE
+                tvFollowNotFound.visibility = View.VISIBLE
+                ivFollowNotFound.visibility = View.VISIBLE
+                tvFollowNotFound.text = getString(R.string.follower_not_found, username)
+            }
+        } else {
+            val adapter = follower?.let { FollowAdapter(it) }
+            followFragmentBinding.apply {
+                rvFollow.adapter = adapter
+                rvFollow.visibility = View.VISIBLE
+                tvFollowNotFound.visibility = View.INVISIBLE
+                ivFollowNotFound.visibility = View.INVISIBLE
+            }
+        }
+
     }
 
-    private fun setfollowing(following: List<FollowResponseItem>?) {
-        val adapter = following?.let { FollowAdapter(it) }
-        followFragmentBinding.rvFollow.adapter = adapter
+    private fun setFollowing(following: List<FollowResponseItem>?, username: String?) {
+        if (following?.size == 0){
+            followFragmentBinding.apply {
+                rvFollow.visibility = View.INVISIBLE
+                tvFollowNotFound.visibility = View.VISIBLE
+                ivFollowNotFound.visibility = View.VISIBLE
+                tvFollowNotFound.text = getString(R.string.following_not_found, username)
+            }
+        } else {
+            val adapter = following?.let { FollowAdapter(it) }
+            followFragmentBinding.apply {
+                followFragmentBinding.rvFollow.adapter = adapter
+                rvFollow.visibility = View.VISIBLE
+                tvFollowNotFound.visibility = View.INVISIBLE
+                ivFollowNotFound.visibility = View.INVISIBLE
+            }
+        }
     }
 
     override fun onDestroyView() {

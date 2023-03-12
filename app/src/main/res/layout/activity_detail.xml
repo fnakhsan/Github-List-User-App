@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".DetailActivity">
 
     <ProgressBar
         android:id="@+id/progressBar2"
@@ -57,7 +57,8 @@
                     android:layout_height="40dp"
                     android:layout_marginStart="20dp"
                     android:gravity="center"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_item_follower"
@@ -65,13 +66,15 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:gravity="center"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_item_following"
                     android:layout_height="40dp"
                     android:gravity="center"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
             </TableRow>
 
@@ -130,8 +133,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_item_username"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_username">
 
             <TableRow
                 android:id="@+id/tab_location"
@@ -193,7 +196,8 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         app:layout_constraintTop_toBottomOf="@id/info_layout"
-        app:tabTextColor="@android:color/white" />
+        app:tabIndicatorColor="@color/blue"
+        app:tabTextColor="?android:textColorPrimary" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
