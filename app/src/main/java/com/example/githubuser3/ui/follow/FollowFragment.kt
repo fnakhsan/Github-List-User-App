@@ -10,24 +10,24 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubuser3.R
 import com.example.githubuser3.data.Resource
 import com.example.githubuser3.data.model.FollowModel
 import com.example.githubuser3.databinding.FragmentFollowBinding
 import com.example.githubuser3.ui.adapter.FollowAdapter
 import com.example.githubuser3.ui.detail.DetailActivity
-import com.example.githubuser3.ui.detail.DetailViewModel
 import com.example.githubuser3.ui.home.HomeFragment
 import com.example.githubuser3.util.ViewModelFactory
 
 class FollowFragment : Fragment() {
-    private lateinit var binding: FragmentFollowBinding
-//    private val followViewModel by viewModels<FollowViewModel>()
+    private var _binding: FragmentFollowBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentFollowBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentFollowBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -55,12 +55,12 @@ class FollowFragment : Fragment() {
                         when (it) {
                             is Resource.Loading -> showLoading(true)
                             is Resource.Error -> {
-                                Log.d(HomeFragment.TAG, it.error)
                                 showLoading(false)
+                                Log.d(HomeFragment.TAG, it.error)
                             }
                             is Resource.Success -> {
-                                setFollowers(it.data)
                                 showLoading(false)
+                                setFollowers(it.data, argsName)
                             }
                         }
                     }
@@ -74,12 +74,12 @@ class FollowFragment : Fragment() {
                         when (it) {
                             is Resource.Loading -> showLoading(true)
                             is Resource.Error -> {
-                                Log.d(HomeFragment.TAG, it.error)
                                 showLoading(false)
+                                Log.d(HomeFragment.TAG, it.error)
                             }
                             is Resource.Success -> {
-                                setFollowing(it.data)
                                 showLoading(false)
+                                setFollowing(it.data, argsName)
                             }
                         }
 
@@ -91,11 +91,16 @@ class FollowFragment : Fragment() {
 
     }
 
-    private fun showLoading(it: Boolean?) {
-        binding.progressBar.visibility = if (it == true) View.VISIBLE else View.GONE
+    private fun showLoading(it: Boolean) {
+        binding.apply {
+            progressBar.visibility = if (it) View.VISIBLE else View.GONE
+            rvFollow.visibility = if (it) View.INVISIBLE else View.VISIBLE
+            layoutNotFound.tvNotFound.visibility = View.INVISIBLE
+            layoutNotFound.ivNotFound.visibility = View.INVISIBLE
+        }
     }
 
-    private fun setFollowers(follower: List<FollowModel>?) {
+    private fun setFollowers(follower: List<FollowModel>?, name: String) {
         val adapter = follower?.let { FollowAdapter(it) }
         adapter?.setOnItemClickCallback(object : FollowAdapter.OnItemClickCallback {
             override fun onItemClicked(data: FollowModel) {
@@ -104,10 +109,19 @@ class FollowFragment : Fragment() {
                 startActivity(intent)
             }
         })
-        binding.rvFollow.adapter = adapter
+        binding.apply {
+            rvFollow.adapter = adapter
+            if (follower?.size == 0){
+                binding.apply {
+                    layoutNotFound.tvNotFound.visibility = View.VISIBLE
+                    layoutNotFound.tvNotFound.text = getString(R.string.follower_not_found, name)
+                    layoutNotFound.ivNotFound.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
-    private fun setFollowing(following: List<FollowModel>?) {
+    private fun setFollowing(following: List<FollowModel>?, name: String) {
         val adapter = following?.let { FollowAdapter(it) }
         adapter?.setOnItemClickCallback(object : FollowAdapter.OnItemClickCallback {
             override fun onItemClicked(data: FollowModel) {
@@ -116,7 +130,21 @@ class FollowFragment : Fragment() {
                 startActivity(intent)
             }
         })
-        binding.rvFollow.adapter = adapter
+        binding.apply {
+            rvFollow.adapter = adapter
+            if (following?.size == 0){
+                binding.apply {
+                    layoutNotFound.tvNotFound.visibility = View.VISIBLE
+                    layoutNotFound.tvNotFound.text = getString(R.string.following_not_found, name)
+                    layoutNotFound.ivNotFound.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

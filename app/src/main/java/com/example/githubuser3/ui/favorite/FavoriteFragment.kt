@@ -2,33 +2,31 @@ package com.example.githubuser3.ui.favorite
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubuser3.R
-import com.example.githubuser3.data.Resource
 import com.example.githubuser3.data.model.UserModel
 import com.example.githubuser3.databinding.FragmentFavoriteBinding
 import com.example.githubuser3.ui.adapter.UserAdapter
 import com.example.githubuser3.ui.home.HomeFragment
-import com.example.githubuser3.ui.home.HomeFragmentDirections
-import com.example.githubuser3.ui.home.HomeViewModel
 import com.example.githubuser3.util.ViewModelFactory
 
 class FavoriteFragment : Fragment() {
-    private lateinit var binding: FragmentFavoriteBinding
+    private var _binding: FragmentFavoriteBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -45,7 +43,7 @@ class FavoriteFragment : Fragment() {
             factory
         }
 
-        favoriteViewModel.getAllChanges().observe(viewLifecycleOwner){
+        favoriteViewModel.getAllChanges().observe(viewLifecycleOwner) {
             setListUsers(it)
         }
 
@@ -54,14 +52,21 @@ class FavoriteFragment : Fragment() {
             Log.d(HomeFragment.TAG, queryHint.toString())
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    favoriteViewModel.searchFav(query).observe(viewLifecycleOwner){
+                    favoriteViewModel.searchFav("%$query%").observe(viewLifecycleOwner) {
                         setListUsers(it)
                     }
                     clearFocus()
                     return true
                 }
 
-                override fun onQueryTextChange(newText: String): Boolean = false
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (newText == null || newText.isEmpty()) {
+                        favoriteViewModel.getAllChanges().observe(viewLifecycleOwner) {
+                            setListUsers(it)
+                        }
+                    }
+                    return true
+                }
             })
         }
     }
@@ -70,7 +75,8 @@ class FavoriteFragment : Fragment() {
         val adapter = search?.let { UserAdapter(it) }
         adapter?.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: UserModel) {
-                val toDetailFragment = FavoriteFragmentDirections.actionFavoriteFragmentToDetailActivity()
+                val toDetailFragment =
+                    FavoriteFragmentDirections.actionFavoriteFragmentToDetailActivity()
                 toDetailFragment.username = data.login
                 findNavController().navigate(toDetailFragment)
             }
@@ -82,6 +88,11 @@ class FavoriteFragment : Fragment() {
     private fun showLoading(it: Boolean) {
         binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
         binding.rvUser.visibility = if (it) View.INVISIBLE else View.VISIBLE
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

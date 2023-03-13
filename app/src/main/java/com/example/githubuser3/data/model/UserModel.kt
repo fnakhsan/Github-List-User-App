@@ -17,7 +17,7 @@ data class UserModel(
 
     @ColumnInfo(name = "name")
     @field:SerializedName("name")
-    var name: String = "",
+    var name: String?,
 
     @field:SerializedName("avatar_url")
     @ColumnInfo(name = "avatar_url")

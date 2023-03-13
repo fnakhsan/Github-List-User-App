@@ -19,14 +19,14 @@ import com.example.githubuser3.ui.adapter.UserAdapter
 import com.example.githubuser3.util.ViewModelFactory
 
 class HomeFragment : Fragment() {
-    private lateinit var binding: FragmentHomeBinding
-//    private val homeViewModel by viewModels<HomeViewModel>()
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -97,13 +97,29 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(toDetailFragment)
             }
         })
-        Log.d(TAG, search.toString())
-        binding.rvUser.adapter = adapter
+        binding.apply {
+            rvUser.adapter = adapter
+            if (search?.size == 0){
+                binding.apply {
+                    layoutNotFound.tvNotFound.visibility = View.VISIBLE
+                    layoutNotFound.ivNotFound.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     private fun showLoading(it: Boolean) {
-        binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
-        binding.rvUser.visibility = if (it) View.INVISIBLE else View.VISIBLE
+        binding.apply {
+            progressBar.visibility = if (it) View.VISIBLE else View.INVISIBLE
+            rvUser.visibility = if (it) View.INVISIBLE else View.VISIBLE
+            layoutNotFound.tvNotFound.visibility = View.INVISIBLE
+            layoutNotFound.ivNotFound.visibility = View.INVISIBLE
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

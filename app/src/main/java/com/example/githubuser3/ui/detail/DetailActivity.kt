@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.githubuser3.R
 import com.example.githubuser3.data.Resource
 import com.example.githubuser3.data.model.UserModel
@@ -30,7 +31,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var username: String
     private var login: String = ""
     private var url: String = ""
-    private var name: String = ""
+    private var name: String? = ""
 
     //    private val detailViewModel by viewModels<DetailViewModel>()
 //    private lateinit var factory: ViewModelFactory
@@ -59,10 +60,8 @@ class DetailActivity : AppCompatActivity() {
                 Log.d(TAG, "observe view model")
                 when (it) {
                     is Resource.Success -> {
-//                            lifecycleScope.launch(Dispatchers.IO) {
                         setUserData(it.data)
                         Log.d(TAG, it.toString())
-//                            }
                         showLoading(false)
                     }
                     is Resource.Error -> {
@@ -72,25 +71,11 @@ class DetailActivity : AppCompatActivity() {
                     is Resource.Loading -> showLoading(true)
                 }
             }
-//                if (isFavorite(username)) {
-//                }
             Log.d(TAG, "akhir view model")
 
         }
 
         Log.d(TAG, "test123")
-//        detailViewModel.apply {
-//            detailUser(username)
-//            detailResponse.observe(this@DetailActivity) { profile ->
-//                setUserData(profile)
-//                favorite.username = profile.login
-//                favorite.avatar = profile.avatarUrl
-//                Log.d(TAG, "detail vm observe")
-//            }
-//            isLoading.observe(this@DetailActivity) {
-//                showLoading(it)
-//            }
-//        }
         setViewPager(username)
         supportActionBar?.elevation = 0f
 
@@ -187,18 +172,20 @@ class DetailActivity : AppCompatActivity() {
         name = profile.name
         detailBinding.apply {
             tvItemId.text = login
-            tvItemUsername.text = name
+            tvItemUsername.text = name ?: ""
             tvItemRepo.text = profile.repository.toString()
             tvItemFollower.text = profile.followers.toString()
             tvItemFollowing.text = profile.following.toString()
             tvItemLocation.text = profile.location
             tvItemCompany.text = profile.company
+            tvItemUsername.visibility = if (name == null) View.GONE else View.VISIBLE
             tabLocation.visibility = if (profile.location == null) View.GONE else View.VISIBLE
             tabCompany.visibility = if (profile.company == null) View.GONE else View.VISIBLE
         }
 
         Glide.with(this@DetailActivity)
             .load(profile.avatar_url)
+            .apply(RequestOptions.circleCropTransform())
             .into(detailBinding.imgItemPhoto)
     }
 
@@ -217,11 +204,6 @@ class DetailActivity : AppCompatActivity() {
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
     }
-
-//    private fun obtainViewModel(activity: AppCompatActivity): DetailViewModel {
-//        val factory = ViewModelFactory.getInstance(activity.application)
-//        return ViewModelProvider(activity, factory)[DetailViewModel::class.java]
-//    }
 
     companion object {
         @StringRes

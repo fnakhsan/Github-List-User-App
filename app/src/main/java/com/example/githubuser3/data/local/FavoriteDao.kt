@@ -12,13 +12,13 @@ interface FavoriteDao {
     @Query("SELECT * FROM UserModel")
     fun getAllChanges(): LiveData<List<UserModel>>
 
-    @Query("SELECT * FROM UserModel where UserModel.login = :name")
+    @Query("SELECT * FROM UserModel WHERE UserModel.login LIKE :name")
     fun searchFav(name: String): LiveData<List<UserModel>>
 
-    @Query("SELECT * FROM UserModel where UserModel.login = :name")
+    @Query("SELECT * FROM UserModel WHERE UserModel.login = :name")
     fun getFav(name: String): UserModel
 
-    @Query("SELECT COUNT(*) FROM UserModel where UserModel.login = :name")
+    @Query("SELECT COUNT(*) FROM UserModel WHERE UserModel.login = :name")
     fun countFav(name: String): Int
 
     @Query("SELECT EXISTS(SELECT * FROM UserModel WHERE UserModel.login = :name)")
