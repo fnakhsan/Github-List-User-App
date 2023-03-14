@@ -22,4 +22,6 @@
     <string name="follower_not_found">%1$s has no followers</string>
     <string name="following_not_found">%1$s does not follow anyone</string>
     <string name="not_found">not found</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="language">Language</string>
 </resources>

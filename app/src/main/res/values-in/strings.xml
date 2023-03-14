@@ -23,4 +23,6 @@
     <string name="follower_not_found">%1$s tidak memiliki pengikut</string>
     <string name="following_not_found">%1$s tidak mengikuti siapapun</string>
     <string name="not_found">tidak ditemukan</string>
+    <string name="dark_mode">Mode Gelap</string>
+    <string name="language">Bahasa</string>
 </resources>
