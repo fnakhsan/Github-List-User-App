@@ -9,5 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#8B949E</color>
     <color name="blue">#4078C0</color>
-    <color name="bottom_nav_color">#FFFFFFFF</color>
+    <color name="bottom_nav_color">#FF000000</color>
 </resources>

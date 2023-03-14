@@ -1,5 +1,6 @@
 package com.example.githubuser3.ui.setting
 
+import android.app.UiModeManager
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -16,7 +17,7 @@ import com.example.githubuser3.data.datastore.SettingPreferences
 import com.example.githubuser3.databinding.FragmentSettingBinding
 import com.example.githubuser3.util.SettingFactory
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 class SettingFragment : Fragment() {
     private var _binding: FragmentSettingBinding? = null
     private val binding get() = _binding!!
@@ -38,11 +39,19 @@ class SettingFragment : Fragment() {
         settingViewModel.getThemeSetting().observe(viewLifecycleOwner) { isDarkModeActive: Boolean ->
             if (isDarkModeActive){
                 Log.d(TAG, "masuk true")
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S){
+                    UiModeManager.MODE_NIGHT_YES
+                } else{
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                }
                 binding.scDarkMode.isChecked = true
             } else {
                 Log.d(TAG, "masuk false")
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S){
+                    UiModeManager.MODE_NIGHT_NO
+                } else{
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
                 binding.scDarkMode.isChecked = false
             }
         }
