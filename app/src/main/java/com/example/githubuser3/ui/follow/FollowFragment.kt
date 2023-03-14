@@ -101,44 +101,42 @@ class FollowFragment : Fragment() {
     }
 
     private fun setFollowers(follower: List<FollowModel>?, name: String) {
-        val adapter = follower?.let { FollowAdapter(it) }
-        adapter?.setOnItemClickCallback(object : FollowAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: FollowModel) {
-                val intent = Intent(this@FollowFragment.context, DetailActivity::class.java)
-                intent.putExtra("extra_username", data.login)
-                startActivity(intent)
+        if (follower?.size == 0){
+            binding.layoutNotFound.apply {
+                tvNotFound.visibility = View.VISIBLE
+                tvNotFound.text = getString(R.string.follower_not_found, name)
+                ivNotFound.visibility = View.VISIBLE
             }
-        })
-        binding.apply {
-            rvFollow.adapter = adapter
-            if (follower?.size == 0){
-                binding.apply {
-                    layoutNotFound.tvNotFound.visibility = View.VISIBLE
-                    layoutNotFound.tvNotFound.text = getString(R.string.follower_not_found, name)
-                    layoutNotFound.ivNotFound.visibility = View.VISIBLE
+        } else {
+            val adapter = follower?.let { FollowAdapter(it) }
+            adapter?.setOnItemClickCallback(object : FollowAdapter.OnItemClickCallback {
+                override fun onItemClicked(data: FollowModel) {
+                    val intent = Intent(this@FollowFragment.context, DetailActivity::class.java)
+                    intent.putExtra("extra_username", data.login)
+                    startActivity(intent)
                 }
-            }
+            })
+            binding.rvFollow.adapter = adapter
         }
     }
 
     private fun setFollowing(following: List<FollowModel>?, name: String) {
-        val adapter = following?.let { FollowAdapter(it) }
-        adapter?.setOnItemClickCallback(object : FollowAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: FollowModel) {
-                val intent = Intent(this@FollowFragment.context, DetailActivity::class.java)
-                intent.putExtra("extra_username", data.login)
-                startActivity(intent)
+        if (following?.size == 0){
+            binding.layoutNotFound.apply {
+                tvNotFound.visibility = View.VISIBLE
+                tvNotFound.text = getString(R.string.following_not_found, name)
+                ivNotFound.visibility = View.VISIBLE
             }
-        })
-        binding.apply {
-            rvFollow.adapter = adapter
-            if (following?.size == 0){
-                binding.apply {
-                    layoutNotFound.tvNotFound.visibility = View.VISIBLE
-                    layoutNotFound.tvNotFound.text = getString(R.string.following_not_found, name)
-                    layoutNotFound.ivNotFound.visibility = View.VISIBLE
+        } else {
+            val adapter = following?.let { FollowAdapter(it) }
+            adapter?.setOnItemClickCallback(object : FollowAdapter.OnItemClickCallback {
+                override fun onItemClicked(data: FollowModel) {
+                    val intent = Intent(this@FollowFragment.context, DetailActivity::class.java)
+                    intent.putExtra("extra_username", data.login)
+                    startActivity(intent)
                 }
-            }
+            })
+            binding.rvFollow.adapter = adapter
         }
     }
 

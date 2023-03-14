@@ -43,24 +43,6 @@ class HomeFragment : Fragment() {
             factory
         }
 
-        homeViewModel.searchUser("a").observe(viewLifecycleOwner) {
-            Log.d(TAG, "masuk observe")
-            when (it) {
-                is Resource.Loading -> showLoading(true)
-                is Resource.Success -> {
-                    Log.d(TAG, it.data.toString())
-                    showLoading(false)
-                    setListUsers(it.data)
-                }
-                is Resource.Error -> {
-                    Log.d(TAG, it.error)
-                    Log.d(TAG, "error")
-                    showLoading(false)
-                }
-            }
-            Log.d(TAG, "akhir observe")
-        }
-
         binding.actionSearch.apply {
             queryHint = resources.getString(R.string.search)
             Log.d(TAG, queryHint.toString())
@@ -83,12 +65,29 @@ class HomeFragment : Fragment() {
                     return true
                 }
 
-                override fun onQueryTextChange(newText: String): Boolean = false
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (newText == null || newText.isEmpty()) {
+                        binding.rvUser.visibility = View.INVISIBLE
+                        binding.layoutNotFound.apply {
+                            tvNotFound.text = getString(R.string.search_message)
+                            tvNotFound.visibility = View.VISIBLE
+                            ivNotFound.visibility = View.VISIBLE
+                        }
+                    }
+                    return true
+                }
             })
         }
     }
 
     private fun setListUsers(search: List<UserModel>?) {
+        if (search?.size == 0) {
+            binding.layoutNotFound.apply {
+                tvNotFound.text = getString(R.string.search_not_found)
+                tvNotFound.visibility = View.VISIBLE
+                ivNotFound.visibility = View.VISIBLE
+            }
+        }
         val adapter = search?.let { UserAdapter(it) }
         adapter?.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: UserModel) {
@@ -97,15 +96,7 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(toDetailFragment)
             }
         })
-        binding.apply {
-            rvUser.adapter = adapter
-            if (search?.size == 0){
-                binding.apply {
-                    layoutNotFound.tvNotFound.visibility = View.VISIBLE
-                    layoutNotFound.ivNotFound.visibility = View.VISIBLE
-                }
-            }
-        }
+        binding.rvUser.adapter = adapter
     }
 
     private fun showLoading(it: Boolean) {

@@ -18,6 +18,7 @@
     <string name="title_favorite">Favorite</string>
     <string name="title_setting">Setting</string>
     <string name="intent">Username : %1$s\nGithub Link : %2$s\nNama : %3$s.</string>
+    <string name="search_message">Temukan pengguna yang anda cari</string>
     <string name="search_not_found">Maaf pengguna yang anda cari\ntidak ditemukan</string>
     <string name="follower_not_found">%1$s tidak memiliki pengikut</string>
     <string name="following_not_found">%1$s tidak mengikuti siapapun</string>

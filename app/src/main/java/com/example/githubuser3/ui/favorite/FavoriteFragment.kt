@@ -47,6 +47,11 @@ class FavoriteFragment : Fragment() {
             setListUsers(it)
         }
 
+        binding.layoutNotFound.apply {
+            tvNotFound.visibility = View.INVISIBLE
+            ivNotFound.visibility = View.INVISIBLE
+        }
+
         binding.actionSearch.apply {
             queryHint = resources.getString(R.string.search)
             Log.d(HomeFragment.TAG, queryHint.toString())
@@ -72,6 +77,16 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun setListUsers(search: List<UserModel>?) {
+        binding.layoutNotFound.apply {
+            if (search?.size == 0) {
+                tvNotFound.text = getString(R.string.search_not_found)
+                tvNotFound.visibility = View.VISIBLE
+                ivNotFound.visibility = View.VISIBLE
+            } else {
+                tvNotFound.visibility = View.INVISIBLE
+                ivNotFound.visibility = View.INVISIBLE
+            }
+        }
         val adapter = search?.let { UserAdapter(it) }
         adapter?.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: UserModel) {
@@ -83,11 +98,6 @@ class FavoriteFragment : Fragment() {
         })
         Log.d(HomeFragment.TAG, search.toString())
         binding.rvUser.adapter = adapter
-    }
-
-    private fun showLoading(it: Boolean) {
-        binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
-        binding.rvUser.visibility = if (it) View.INVISIBLE else View.VISIBLE
     }
 
     override fun onDestroyView() {

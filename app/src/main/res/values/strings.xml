@@ -17,6 +17,7 @@
     <string name="title_favorite">Favorite</string>
     <string name="title_setting">Setting</string>
     <string name="intent">Username : %1$s\nGithub Link : %2$s\nName : %3$s.</string>
+    <string name="search_message">Find the user you are looking for</string>
     <string name="search_not_found">Sorry the user you searched for\nwas not found</string>
     <string name="follower_not_found">%1$s has no followers</string>
     <string name="following_not_found">%1$s does not follow anyone</string>
