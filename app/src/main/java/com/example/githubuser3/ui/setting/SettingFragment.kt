@@ -12,23 +12,21 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import com.example.githubuser3.R
 import com.example.githubuser3.data.datastore.SettingPreferences
 import com.example.githubuser3.databinding.FragmentSettingBinding
 import com.example.githubuser3.util.SettingFactory
 
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 class SettingFragment : Fragment() {
     private var _binding: FragmentSettingBinding? = null
     private val binding get() = _binding!!
 
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSettingBinding.inflate(layoutInflater, container, false)
-        return inflater.inflate(R.layout.fragment_setting, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,7 +36,7 @@ class SettingFragment : Fragment() {
         val settingViewModel = ViewModelProvider(this, SettingFactory(preferences))[SettingViewModel::class.java]
 
         settingViewModel.getThemeSetting().observe(viewLifecycleOwner) { isDarkModeActive: Boolean ->
-            if (isDarkModeActive) {
+            if (isDarkModeActive){
                 Log.d(TAG, "masuk true")
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 binding.scDarkMode.isChecked = true
