@@ -11,26 +11,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:stretchColumns="1"
+        android:stretchColumns="*"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp">
+
+            <!--            <com.google.android.material.textfield.TextInputLayout-->
+            <!--                android:id="@+id/language_menu"-->
+            <!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:hint="@string/language">-->
+
+            <!--                <AutoCompleteTextView-->
+            <!--                    android:id="@+id/autoCompleteTextView"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:hint="@string/language"-->
+            <!--                    android:inputType="none"-->
+            <!--                    android:text="@string/language" />-->
+            <!--            </com.google.android.material.textfield.TextInputLayout>-->
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/language"
+                android:layout_gravity="center_vertical"
                 android:textSize="20sp" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/sp_language"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="end"
+                android:entries="@array/language_array" />
 
         </TableRow>
 
         <TableRow>
-
             <TextView
                 android:id="@+id/tv_dark_mode"
                 android:layout_width="match_parent"
@@ -40,8 +62,8 @@
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sc_dark_mode"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_width="wrap_content"
+                android:layout_height="48dp" />
         </TableRow>
     </TableLayout>
 

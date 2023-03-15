@@ -25,4 +25,8 @@
     <string name="not_found">tidak ditemukan</string>
     <string name="dark_mode">Mode Gelap</string>
     <string name="language">Bahasa</string>
+    <string-array name="language_array">
+        <item>Inggris</item>
+        <item>Indonesia</item>
+    </string-array>
 </resources>

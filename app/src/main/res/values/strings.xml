@@ -24,4 +24,8 @@
     <string name="not_found">not found</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="language">Language</string>
+    <string-array name="language_array">
+        <item>English</item>
+        <item>Indonesia</item>
+    </string-array>
 </resources>

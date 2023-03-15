@@ -1,9 +1,13 @@
 package com.example.githubuser3.ui
 
+import android.app.LocaleManager
 import android.app.UiModeManager
+import android.os.Build
 import android.os.Bundle
+import android.os.LocaleList
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -37,15 +41,32 @@ class MainActivity : AppCompatActivity() {
         val preferences = SettingPreferences.getInstance(dataStore)
         val settingViewModel =
             ViewModelProvider(this, SettingFactory(preferences))[SettingViewModel::class.java]
+        settingViewModel.getLocaleSetting().observe(this) {
+            if (it == "in") {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    baseContext.getSystemService(LocaleManager::class.java).applicationLocales =
+                        LocaleList.forLanguageTags("in")
+                } else {
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("in"))
+                }
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    baseContext.getSystemService(LocaleManager::class.java).applicationLocales =
+                        LocaleList.forLanguageTags("en")
+                } else {
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("en"))
+                }
+            }
+        }
         settingViewModel.getThemeSetting().observe(this) { isDarkModeActive: Boolean ->
             if (isDarkModeActive) {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     UiModeManager.MODE_NIGHT_YES
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 }
             } else {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     UiModeManager.MODE_NIGHT_NO
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
