@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="@id/view_pager"
         tools:visibility="visible" />
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/info_layout"
         android:layout_width="match_parent"
@@ -33,7 +34,6 @@
             android:id="@+id/img_item_photo"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:layout_constraintEnd_toStartOf="@id/info_table"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,8 +41,8 @@
             android:id="@+id/info_table"
             android:layout_width="230dp"
             android:layout_height="100dp"
-            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="@id/img_item_photo"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/img_item_photo"
             app:layout_constraintTop_toTopOf="@id/img_item_photo">
 
@@ -57,7 +57,8 @@
                     android:layout_height="40dp"
                     android:layout_marginStart="20dp"
                     android:gravity="center"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_item_follower"
@@ -65,13 +66,15 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:gravity="center"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_item_following"
                     android:layout_height="40dp"
                     android:gravity="center"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
             </TableRow>
 
@@ -126,12 +129,13 @@
             app:layout_constraintTop_toBottomOf="@id/tv_item_id" />
 
         <TableLayout
+            android:id="@+id/additional_tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_item_username"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_username">
 
             <TableRow
                 android:id="@+id/tab_location"
@@ -155,7 +159,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="5dp"
                     android:layout_weight="2"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </TableRow>
 
             <TableRow
@@ -179,12 +184,11 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="5dp"
                     android:layout_weight="2"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </TableRow>
 
         </TableLayout>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.tabs.TabLayout
@@ -192,8 +196,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        app:tabIndicatorColor="@color/blue"
         app:layout_constraintTop_toBottomOf="@id/info_layout"
+        app:tabIndicatorColor="@color/blue"
         app:tabTextColor="?android:textColorPrimary" />
 
     <androidx.viewpager2.widget.ViewPager2

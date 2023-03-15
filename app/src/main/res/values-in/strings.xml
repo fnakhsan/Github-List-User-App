@@ -20,6 +20,7 @@
     <string name="intent">Username : %1$s\nGithub Link : %2$s\nNama : %3$s.</string>
     <string name="search_message">Temukan pengguna yang anda cari</string>
     <string name="search_not_found">Maaf pengguna yang anda cari\ntidak ditemukan</string>
+    <string name="add_favorite_user">Tambahkan pengguna favoritmu terlebih dahulu!</string>
     <string name="follower_not_found">%1$s tidak memiliki pengikut</string>
     <string name="following_not_found">%1$s tidak mengikuti siapapun</string>
     <string name="not_found">tidak ditemukan</string>

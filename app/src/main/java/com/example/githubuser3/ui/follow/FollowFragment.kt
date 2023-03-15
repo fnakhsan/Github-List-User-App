@@ -2,7 +2,6 @@ package com.example.githubuser3.ui.follow
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import com.example.githubuser3.data.model.FollowModel
 import com.example.githubuser3.databinding.FragmentFollowBinding
 import com.example.githubuser3.ui.adapter.FollowAdapter
 import com.example.githubuser3.ui.detail.DetailActivity
-import com.example.githubuser3.ui.home.HomeFragment
 import com.example.githubuser3.util.ViewModelFactory
 
 class FollowFragment : Fragment() {
@@ -46,17 +44,15 @@ class FollowFragment : Fragment() {
         val followViewModel: FollowViewModel by viewModels {
             factory
         }
+
         if (argsName != null) {
-            Log.d(TAG, "$argsName")
             when (argsNumber) {
                 1 -> {
-
                     followViewModel.getFollower(argsName).observe(viewLifecycleOwner) {
                         when (it) {
                             is Resource.Loading -> showLoading(true)
                             is Resource.Error -> {
                                 showLoading(false)
-                                Log.d(HomeFragment.TAG, it.error)
                             }
                             is Resource.Success -> {
                                 showLoading(false)
@@ -64,18 +60,14 @@ class FollowFragment : Fragment() {
                             }
                         }
                     }
-
-                    Log.d(TAG, "$argsNumber")
                 }
 
                 2 -> {
-
                     followViewModel.getFollowing(argsName).observe(viewLifecycleOwner) {
                         when (it) {
                             is Resource.Loading -> showLoading(true)
                             is Resource.Error -> {
                                 showLoading(false)
-                                Log.d(HomeFragment.TAG, it.error)
                             }
                             is Resource.Success -> {
                                 showLoading(false)
@@ -84,7 +76,6 @@ class FollowFragment : Fragment() {
                         }
 
                     }
-                    Log.d(TAG, "$argsNumber")
                 }
             }
         }
@@ -95,18 +86,14 @@ class FollowFragment : Fragment() {
         binding.apply {
             progressBar.visibility = if (it) View.VISIBLE else View.GONE
             rvFollow.visibility = if (it) View.INVISIBLE else View.VISIBLE
-            layoutNotFound.tvNotFound.visibility = View.INVISIBLE
-            layoutNotFound.ivNotFound.visibility = View.INVISIBLE
+            setLayoutNotFoundVisibility(false)
         }
     }
 
     private fun setFollowers(follower: List<FollowModel>?, name: String) {
-        if (follower?.size == 0){
-            binding.layoutNotFound.apply {
-                tvNotFound.visibility = View.VISIBLE
-                tvNotFound.text = getString(R.string.follower_not_found, name)
-                ivNotFound.visibility = View.VISIBLE
-            }
+        if (follower?.size == 0) {
+            binding.layoutNotFound.tvNotFound.text = getString(R.string.follower_not_found, name)
+            setLayoutNotFoundVisibility(true)
         } else {
             val adapter = follower?.let { FollowAdapter(it) }
             adapter?.setOnItemClickCallback(object : FollowAdapter.OnItemClickCallback {
@@ -121,12 +108,9 @@ class FollowFragment : Fragment() {
     }
 
     private fun setFollowing(following: List<FollowModel>?, name: String) {
-        if (following?.size == 0){
-            binding.layoutNotFound.apply {
-                tvNotFound.visibility = View.VISIBLE
-                tvNotFound.text = getString(R.string.following_not_found, name)
-                ivNotFound.visibility = View.VISIBLE
-            }
+        if (following?.size == 0) {
+            binding.layoutNotFound.tvNotFound.text = getString(R.string.following_not_found, name)
+            setLayoutNotFoundVisibility(true)
         } else {
             val adapter = following?.let { FollowAdapter(it) }
             adapter?.setOnItemClickCallback(object : FollowAdapter.OnItemClickCallback {
@@ -140,6 +124,18 @@ class FollowFragment : Fragment() {
         }
     }
 
+    private fun setLayoutNotFoundVisibility(isVisible: Boolean) {
+        binding.layoutNotFound.apply {
+            if (isVisible){
+                tvNotFound.visibility = View.VISIBLE
+                ivNotFound.visibility = View.VISIBLE
+            } else {
+                tvNotFound.visibility = View.INVISIBLE
+                ivNotFound.visibility = View.INVISIBLE
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -148,7 +144,6 @@ class FollowFragment : Fragment() {
     companion object {
         private const val ARG_SECTION_NUMBER = "section_number"
         private const val EXTRA_NAME = "username"
-        private const val TAG = "Follow"
 
         @JvmStatic
         fun newInstance(index: Int, username: String) =

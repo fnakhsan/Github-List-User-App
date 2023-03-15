@@ -1,6 +1,5 @@
 package com.example.githubuser3.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +33,6 @@ class UserAdapter(private val listUsers: List<UserModel>) :
         val listUser = listUsers[position]
         holder.apply {
             tvName.text = listUser.login
-            Log.d(TAG, listUser.avatar_url)
             Glide.with(itemView.context)
                 .load(listUser.avatar_url)
                 .apply(RequestOptions.circleCropTransform())
@@ -48,9 +46,5 @@ class UserAdapter(private val listUsers: List<UserModel>) :
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvName: TextView = view.findViewById(R.id.tv_item_name)
         val tvImage: ImageView = view.findViewById(R.id.img_item_photo)
-    }
-
-    companion object {
-        const val TAG = "adapter"
     }
 }

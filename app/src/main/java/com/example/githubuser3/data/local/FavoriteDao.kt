@@ -18,14 +18,8 @@ interface FavoriteDao {
     @Query("SELECT * FROM UserModel WHERE UserModel.login = :name")
     fun getFav(name: String): UserModel
 
-    @Query("SELECT COUNT(*) FROM UserModel WHERE UserModel.login = :name")
-    fun countFav(name: String): Int
-
     @Query("SELECT EXISTS(SELECT * FROM UserModel WHERE UserModel.login = :name)")
     fun isFavorite(name: String): Boolean
-
-    @Update
-    fun update(favorite: UserModel)
 
     @Delete
     suspend fun delete(favorite: UserModel)

@@ -45,11 +45,11 @@ class FavoriteFragment : Fragment() {
 
         favoriteViewModel.getAllChanges().observe(viewLifecycleOwner) {
             setListUsers(it)
-        }
-
-        binding.layoutNotFound.apply {
-            tvNotFound.visibility = View.INVISIBLE
-            ivNotFound.visibility = View.INVISIBLE
+            if (it.isEmpty()){
+                setErrorMessage(true, getString(R.string.add_favorite_user), R.drawable.ic_add_user)
+            } else {
+                setErrorMessage(false)
+            }
         }
 
         binding.actionSearch.apply {
@@ -59,6 +59,11 @@ class FavoriteFragment : Fragment() {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     favoriteViewModel.searchFav("%$query%").observe(viewLifecycleOwner) {
                         setListUsers(it)
+                        if (it.isEmpty()){
+                            setErrorMessage(true, getString(R.string.search_not_found), R.drawable.ic_search_user)
+                        } else {
+                            setErrorMessage(false)
+                        }
                     }
                     clearFocus()
                     return true
@@ -68,6 +73,11 @@ class FavoriteFragment : Fragment() {
                     if (newText == null || newText.isEmpty()) {
                         favoriteViewModel.getAllChanges().observe(viewLifecycleOwner) {
                             setListUsers(it)
+                            if (it.isEmpty()){
+                                setErrorMessage(true, getString(R.string.add_favorite_user), R.drawable.ic_add_user)
+                            } else {
+                                setErrorMessage(false)
+                            }
                         }
                     }
                     return true
@@ -77,16 +87,6 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun setListUsers(search: List<UserModel>?) {
-        binding.layoutNotFound.apply {
-            if (search?.size == 0) {
-                tvNotFound.text = getString(R.string.search_not_found)
-                tvNotFound.visibility = View.VISIBLE
-                ivNotFound.visibility = View.VISIBLE
-            } else {
-                tvNotFound.visibility = View.INVISIBLE
-                ivNotFound.visibility = View.INVISIBLE
-            }
-        }
         val adapter = search?.let { UserAdapter(it) }
         adapter?.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: UserModel) {
@@ -96,16 +96,29 @@ class FavoriteFragment : Fragment() {
                 findNavController().navigate(toDetailFragment)
             }
         })
-        Log.d(HomeFragment.TAG, search.toString())
         binding.rvUser.adapter = adapter
+    }
+
+    private fun setErrorMessage(
+        isError: Boolean,
+        message: String = getString(R.string.search_not_found),
+        image: Int = R.drawable.ic_search_user
+    ) {
+        binding.layoutNotFound.apply {
+            if (isError) {
+                tvNotFound.text = message
+                ivNotFound.setImageResource(image)
+                tvNotFound.visibility = View.VISIBLE
+                ivNotFound.visibility = View.VISIBLE
+            } else {
+                tvNotFound.visibility = View.INVISIBLE
+                ivNotFound.visibility = View.INVISIBLE
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-
     }
 }

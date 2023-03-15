@@ -46,7 +46,4 @@ data class UserModel(
     @field:SerializedName("company")
     @ColumnInfo(name = "company")
     val company: String?
-
-//@ColumnInfo(name = "isFavorite")
-//var isFavorite: Boolean? = false
 ) : Parcelable
