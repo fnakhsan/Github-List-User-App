@@ -1,7 +1,6 @@
 package com.example.githubuser3.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,14 +44,12 @@ class HomeFragment : Fragment() {
 
         binding.actionSearch.apply {
             queryHint = resources.getString(R.string.search)
-            Log.d(TAG, queryHint.toString())
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     homeViewModel.searchUser(query).observe(viewLifecycleOwner) {
                         when (it) {
                             is Resource.Loading -> showLoading(true)
                             is Resource.Error -> {
-                                Log.d(TAG, it.error)
                                 showLoading(false)
                             }
                             is Resource.Success -> {
@@ -70,8 +67,7 @@ class HomeFragment : Fragment() {
                         binding.rvUser.visibility = View.INVISIBLE
                         binding.layoutNotFound.apply {
                             tvNotFound.text = getString(R.string.search_message)
-                            tvNotFound.visibility = View.VISIBLE
-                            ivNotFound.visibility = View.VISIBLE
+                            setLayoutNotFoundVisibility(true)
                         }
                     }
                     return true
@@ -84,8 +80,7 @@ class HomeFragment : Fragment() {
         if (search?.size == 0) {
             binding.layoutNotFound.apply {
                 tvNotFound.text = getString(R.string.search_not_found)
-                tvNotFound.visibility = View.VISIBLE
-                ivNotFound.visibility = View.VISIBLE
+                setLayoutNotFoundVisibility(true)
             }
         }
         val adapter = search?.let { UserAdapter(it) }
@@ -103,17 +98,25 @@ class HomeFragment : Fragment() {
         binding.apply {
             progressBar.visibility = if (it) View.VISIBLE else View.INVISIBLE
             rvUser.visibility = if (it) View.INVISIBLE else View.VISIBLE
-            layoutNotFound.tvNotFound.visibility = View.INVISIBLE
-            layoutNotFound.ivNotFound.visibility = View.INVISIBLE
+            setLayoutNotFoundVisibility(false)
         }
+    }
+
+    private fun setLayoutNotFoundVisibility(isVisible: Boolean){
+        binding.layoutNotFound.apply {
+            if (isVisible) {
+                tvNotFound.visibility = View.VISIBLE
+                ivNotFound.visibility = View.VISIBLE
+            } else {
+                tvNotFound.visibility = View.INVISIBLE
+                ivNotFound.visibility = View.INVISIBLE
+            }
+        }
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        const val TAG = "HomeFragment"
     }
 }
