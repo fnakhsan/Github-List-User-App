@@ -30,12 +30,14 @@ class FollowAdapter(private val listFollow: List<FollowModel>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val listUser = listFollow[position]
-        holder.tvName.text = listUser.login
-        Glide.with(holder.tvImage)
-            .load(listUser.avatarUrl)
-            .apply(RequestOptions().override(55, 55))
-            .into(holder.tvImage)
-        holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listUser) }
+        holder.apply {
+            tvName.text = listUser.login
+            Glide.with(itemView.context)
+                .load(listUser.avatarUrl)
+                .apply(RequestOptions.circleCropTransform())
+                .into(tvImage)
+            itemView.setOnClickListener { onItemClickCallback.onItemClicked(listUser) }
+        }
     }
 
     override fun getItemCount() = listFollow.size

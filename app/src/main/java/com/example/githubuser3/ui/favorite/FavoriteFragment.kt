@@ -1,7 +1,6 @@
 package com.example.githubuser3.ui.favorite
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import com.example.githubuser3.R
 import com.example.githubuser3.data.model.UserModel
 import com.example.githubuser3.databinding.FragmentFavoriteBinding
 import com.example.githubuser3.ui.adapter.UserAdapter
-import com.example.githubuser3.ui.home.HomeFragment
 import com.example.githubuser3.util.ViewModelFactory
 
 class FavoriteFragment : Fragment() {
@@ -54,7 +52,6 @@ class FavoriteFragment : Fragment() {
 
         binding.actionSearch.apply {
             queryHint = resources.getString(R.string.search)
-            Log.d(HomeFragment.TAG, queryHint.toString())
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     favoriteViewModel.searchFav("%$query%").observe(viewLifecycleOwner) {

@@ -24,23 +24,44 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        darkMode()
+        val preferences = SettingPreferences.getInstance(dataStore)
+        val settingViewModel =
+            ViewModelProvider(this, SettingFactory(preferences))[SettingViewModel::class.java]
+
+        darkMode(settingViewModel)
+        getLocale(settingViewModel)
         setTheme(R.style.Theme_GithubUser3)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
         binding.bottomNav.itemIconTintList = null
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
         navController = navHostFragment.navController
         setupWithNavController(binding.bottomNav, navController)
-
     }
 
-    private fun darkMode() {
-        val preferences = SettingPreferences.getInstance(dataStore)
-        val settingViewModel =
-            ViewModelProvider(this, SettingFactory(preferences))[SettingViewModel::class.java]
+    private fun darkMode(settingViewModel: SettingViewModel) {
+        settingViewModel.getThemeSetting().observe(this) { isDarkModeActive: Boolean ->
+            if (isDarkModeActive) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    UiModeManager.MODE_NIGHT_YES
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                }
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    UiModeManager.MODE_NIGHT_NO
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+            }
+        }
+    }
+
+    private fun getLocale(settingViewModel: SettingViewModel) {
         settingViewModel.getLocaleSetting().observe(this) {
             if (it == "in") {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -55,21 +76,6 @@ class MainActivity : AppCompatActivity() {
                         LocaleList.forLanguageTags("en")
                 } else {
                     AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("en"))
-                }
-            }
-        }
-        settingViewModel.getThemeSetting().observe(this) { isDarkModeActive: Boolean ->
-            if (isDarkModeActive) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    UiModeManager.MODE_NIGHT_YES
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                }
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    UiModeManager.MODE_NIGHT_NO
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 }
             }
         }

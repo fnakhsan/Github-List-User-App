@@ -6,7 +6,6 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.LocaleList
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,80 +46,90 @@ class SettingFragment : Fragment() {
         val settingViewModel =
             ViewModelProvider(this, SettingFactory(preferences))[SettingViewModel::class.java]
 
-        settingViewModel.getThemeSetting()
-            .observe(viewLifecycleOwner) { isDarkModeActive: Boolean ->
-                if (isDarkModeActive) {
-                    Log.d(TAG, "masuk true")
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        UiModeManager.MODE_NIGHT_YES
-                    } else {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    }
-                    binding.scDarkMode.isChecked = true
-                } else {
-                    Log.d(TAG, "masuk false")
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        UiModeManager.MODE_NIGHT_NO
-                    } else {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    }
-                    binding.scDarkMode.isChecked = false
-                }
-            }
-
-        binding.scDarkMode.setOnCheckedChangeListener { _, isChecked ->
-            Log.d(TAG, isChecked.toString())
-            settingViewModel.saveThemeSetting(isChecked)
-        }
-
-        val language = resources.getStringArray(R.array.language_array)
+        val language: Array<String> = resources.getStringArray(R.array.language_array)
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, language)
-        settingViewModel.getLocaleSetting().observe(viewLifecycleOwner) {
-            if (it == "in") {
-                binding.spLanguage.setSelection(arrayAdapter.getPosition(language[1]))
-            } else {
-                binding.spLanguage.setSelection(arrayAdapter.getPosition(language[0]))
+
+        settingViewModel.apply {
+            getThemeSetting().observe(viewLifecycleOwner) { isDarkModeActive: Boolean ->
+                    setDarkMode(isDarkModeActive)
+                }
+
+            getLocaleSetting().observe(viewLifecycleOwner) {
+                if (it == "in") {
+                    binding.spLanguage.setSelection(arrayAdapter.getPosition(language[1]))
+                } else {
+                    binding.spLanguage.setSelection(arrayAdapter.getPosition(language[0]))
+                }
             }
         }
-        binding.spLanguage.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if (parent?.getItemAtPosition(position).toString() == language[1]) {
-                    settingViewModel.saveLocaleSetting("in")
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        requireContext().getSystemService(LocaleManager::class.java).applicationLocales =
-                            LocaleList.forLanguageTags("in")
+
+        binding.apply {
+            scDarkMode.setOnCheckedChangeListener { _, isChecked ->
+                settingViewModel.saveThemeSetting(isChecked)
+            }
+
+            spLanguage.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (parent?.getItemAtPosition(position).toString() == language[1]) {
+                        setLocaleIndonesia(true, settingViewModel)
                     } else {
-                        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("in"))
-                    }
-                } else {
-                    settingViewModel.saveLocaleSetting("en")
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        requireContext().getSystemService(LocaleManager::class.java).applicationLocales =
-                            LocaleList.forLanguageTags("en")
-                    } else {
-                        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("en"))
+                        setLocaleIndonesia(false, settingViewModel)
                     }
                 }
 
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
+            spLanguage.adapter = arrayAdapter
+        }
+    }
+
+    private fun setDarkMode(isDarkModeActive: Boolean) {
+        if (isDarkModeActive) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                UiModeManager.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+            binding.scDarkMode.isChecked = true
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                UiModeManager.MODE_NIGHT_NO
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            binding.scDarkMode.isChecked = false
+        }
+    }
+
+    private fun setLocaleIndonesia(isIndonesia: Boolean, settingViewModel: SettingViewModel) {
+        if (isIndonesia) {
+            settingViewModel.saveLocaleSetting("in")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requireContext().getSystemService(LocaleManager::class.java).applicationLocales =
+                    LocaleList.forLanguageTags("in")
+            } else {
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("in"))
+            }
+        } else {
+            settingViewModel.saveLocaleSetting("en")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requireContext().getSystemService(LocaleManager::class.java).applicationLocales =
+                    LocaleList.forLanguageTags("en")
+            } else {
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("en"))
             }
         }
-        binding.spLanguage.adapter = arrayAdapter
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private const val TAG = "setting"
     }
 }
