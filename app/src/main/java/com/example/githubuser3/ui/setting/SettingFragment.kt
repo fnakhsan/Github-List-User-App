@@ -1,7 +1,6 @@
 package com.example.githubuser3.ui.setting
 
 import android.app.LocaleManager
-import android.app.UiModeManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -51,8 +50,8 @@ class SettingFragment : Fragment() {
 
         settingViewModel.apply {
             getThemeSetting().observe(viewLifecycleOwner) { isDarkModeActive: Boolean ->
-                    setDarkMode(isDarkModeActive)
-                }
+                setDarkMode(isDarkModeActive)
+            }
 
             getLocaleSetting().observe(viewLifecycleOwner) {
                 if (it == "in") {
@@ -92,18 +91,10 @@ class SettingFragment : Fragment() {
 
     private fun setDarkMode(isDarkModeActive: Boolean) {
         if (isDarkModeActive) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                UiModeManager.MODE_NIGHT_YES
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            }
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             binding.scDarkMode.isChecked = true
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                UiModeManager.MODE_NIGHT_NO
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             binding.scDarkMode.isChecked = false
         }
     }

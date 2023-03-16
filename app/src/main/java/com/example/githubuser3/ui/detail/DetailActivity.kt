@@ -73,10 +73,14 @@ class DetailActivity : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             when (detailViewModel.isFavorite(username)) {
                 true -> {
-                    fav?.setIcon(R.drawable.ic_favorite_selected)
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        fav?.setIcon(R.drawable.ic_favorite_selected)
+                    }
                 }
                 false -> {
-                    fav?.setIcon(R.drawable.ic_favorite_default)
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        fav?.setIcon(R.drawable.ic_favorite_default)
+                    }
                 }
             }
         }

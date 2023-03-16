@@ -1,7 +1,6 @@
 package com.example.githubuser3.ui
 
 import android.app.LocaleManager
-import android.app.UiModeManager
 import android.os.Build
 import android.os.Bundle
 import android.os.LocaleList
@@ -46,17 +45,9 @@ class MainActivity : AppCompatActivity() {
     private fun darkMode(settingViewModel: SettingViewModel) {
         settingViewModel.getThemeSetting().observe(this) { isDarkModeActive: Boolean ->
             if (isDarkModeActive) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    UiModeManager.MODE_NIGHT_YES
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                }
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    UiModeManager.MODE_NIGHT_NO
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                }
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
         }
     }
